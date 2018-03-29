@@ -1,105 +1,103 @@
 package com.mploed.dddwithspring.scoring;
 
-
 import com.mploed.dddwithspring.scoring.agencyResult.AgencyResultAggregate;
+import com.mploed.dddwithspring.scoring.agencyResult.AgencyResultProjection;
+import com.mploed.dddwithspring.scoring.agencyResult.AgencyResultRepository;
 import com.mploed.dddwithspring.scoring.applicant.ApplicantAggregate;
+import com.mploed.dddwithspring.scoring.applicant.ApplicantResultProjection;
+import com.mploed.dddwithspring.scoring.applicant.ApplicantResultRepository;
+import com.mploed.dddwithspring.scoring.events.incoming.*;
 import com.mploed.dddwithspring.scoring.financialSituation.FinancialSituationAggregate;
+import com.mploed.dddwithspring.scoring.financialSituation.FinancialSituationResultProjection;
+import com.mploed.dddwithspring.scoring.financialSituation.FinancialSituationResultRepository;
 import com.mploed.dddwithspring.scoring.scoringResult.ScoringResultAggregate;
+import com.mploed.dddwithspring.scoring.scoringResult.ScoringResultRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-/**
- * This service aims to show how working with various aggregates can be implemented using application services.
- *
- * This class is also a very good starting point for taking a look at the public APIs of the aggregates.
- */
+@Service
 public class ScoringApplicationService {
-	public ScoringResultAggregate performScoring(ApplicationNumber applicationNumber) {
-		// Load an AgencyRe.sultAggregate
-		AgencyResultAggregate agencyResultAggregate = loadAgencyResult();
+	private ScoringResultRepository scoringResultRepository;
 
-		// Load an ApplicantAggregate
-		ApplicantAggregate applicantAggregate = loadApplicant(applicationNumber);
+	private AgencyResultRepository agencyResultRepository;
 
+	private ApplicantResultRepository applicantResultRepository;
 
-		// Load a FinancialSituationAggregate
-		FinancialSituationAggregate financialSituationAggregate = loadFinancialSituation(applicationNumber);
+	private FinancialSituationResultRepository financialSituationResultRepository;
 
 
-		return performScoringOnAggregates(applicationNumber, agencyResultAggregate, applicantAggregate, financialSituationAggregate);
+	@Autowired
+	public ScoringApplicationService(ScoringResultRepository scoringResultRepository, AgencyResultRepository agencyResultRepository, ApplicantResultRepository applicantResultRepository, FinancialSituationResultRepository financialSituationResultRepository) {
+		this.scoringResultRepository = scoringResultRepository;
+		this.agencyResultRepository = agencyResultRepository;
+		this.applicantResultRepository = applicantResultRepository;
+		this.financialSituationResultRepository = financialSituationResultRepository;
 	}
 
-	ScoringResultAggregate performScoringOnAggregates(ApplicationNumber applicationNumber, AgencyResultAggregate agencyResultAggregate, ApplicantAggregate applicantAggregate, FinancialSituationAggregate financialSituationAggregate) {
-		// Perform Scoring on Financial Situation Aggregate
-		int financialSituationPoints = financialSituationAggregate.calculateScoringPoints();
+	public void scoreAgencyResult(AgencyResultArrivedEvent agencyResultArrivedEvent) {
+		AgencyResultAggregate.AgencyResultBuilder agencyResultBuilder = new AgencyResultAggregate.AgencyResultBuilder()
+				.forPerson(agencyResultArrivedEvent.getFirstName(),
+						agencyResultArrivedEvent.getLastName(),
+						agencyResultArrivedEvent.getStreet(),
+						agencyResultArrivedEvent.getPostCode(),
+						agencyResultArrivedEvent.getCity())
+				.withPoints(agencyResultArrivedEvent.getPoints());
+		for(AgencyMessage message : agencyResultArrivedEvent.getWarningMessages()) {
+			agencyResultBuilder.withWarning(message.getKey(), message.getMessageText());
+		}
+		for(AgencyMessage message : agencyResultArrivedEvent.getKoCriteria()) {
+			agencyResultBuilder.withKoCriteria(message.getKey(), message.getMessageText());
+		}
+
+		AgencyResultAggregate agencyResultAggregate = agencyResultBuilder.build();
+
+		agencyResultRepository.save(agencyResultAggregate);
 
 
-		// Perform Scoring on ApplicantAggregate
-		int applicantPoints = applicantAggregate.calculateScoringPoints();
+	}
 
-		//Perform Scoring on the AgencyResultAggregate
-		int agencyPoints = agencyResultAggregate.calculateScoringPoints();
-		boolean noGoPresent = agencyResultAggregate.isAcceptable();
+	public void scoreApplicant(ApplicantAddedEvent event){
+		ApplicationNumber applicationNumber = new ApplicationNumber(event.getApplicationNumber());
+		ApplicantAggregate applicantAggregate = new ApplicantAggregate.ApplicantAggregateBuilder(applicationNumber)
+				.accountBalance(event.getAccountBalance())
+				.city(event.getCity())
+				.postCode(event.getPostCode())
+				.firstName(event.getFirstName())
+				.lastName(event.getLastName())
+				.street(event.getStreet())
+				.build();
 
+		applicantResultRepository.save(applicantAggregate);
 
+	}
 
+	public void scoreFinancialSituation(FinancialSituationEnteredEvent event) {
+		ApplicationNumber applicationNumber = new ApplicationNumber(event.getApplicationNumber());
+		FinancialSituationAggregate financialSituationAggregate = new FinancialSituationAggregate.FinancialSituationBuilder(applicationNumber)
+				.costOfLiving(event.getCostOfLiving())
+				.otherIncome(event.getOtherIncome())
+				.rent(event.getRent())
+				.salary(event.getSalary())
+				.build();
+
+		financialSituationResultRepository.save(financialSituationAggregate);
+	}
+
+	public void performFinalScoring(ApplicationSubmittedEvent applicationSubmittedEvent) {
+		ApplicationNumber applicationNumber = new ApplicationNumber(applicationSubmittedEvent.getApplicationNumber());
+
+		FinancialSituationResultProjection financialSituationResultProjection = financialSituationResultRepository.retrieve(applicationNumber);
+		ApplicantResultProjection applicantResultProjection = applicantResultRepository.retrieve(applicationNumber);
+		AgencyResultProjection agencyResultProjection = agencyResultRepository.retrieve(new PersonId(applicantResultProjection.getPersonId()));
 
 		ScoringResultAggregate scoringResultAggregate = new ScoringResultAggregate.Builder(applicationNumber)
-				.agencyScoring(agencyPoints)
-				.applicantScoring(applicantPoints)
-				.financialSituationScoring(financialSituationPoints)
-				.noGoCriteria(noGoPresent)
+				.noGoCriteria(agencyResultProjection.isNoGoPresent())
+				.agencyScoring(agencyResultProjection.getPoints())
+				.financialSituationScoring(financialSituationResultProjection.getPoints())
+				.applicantScoring(applicantResultProjection.getPoints())
 				.build();
 
+		scoringResultRepository.save(scoringResultAggregate);
+	};
 
-
-		return scoringResultAggregate;
-	}
-
-	/**
-	 * Method that simulates the retrieval of an AgencyResultAggregate. This would usually be done with a Respository
-	 * (which is not the scope of this demo project)
-	 *
-	 * @return a fully initialized AgencyResultAggregate
-	 */
-	private AgencyResultAggregate loadAgencyResult() {
-		return new AgencyResultAggregate.AgencyResultBuilder()
-				.forPerson("Michael", "Plöd", "Kreuzstrasse 16", "80331", "Munich")
-				.withPoints(80)
-				.withWarning("100", "Did not pay his last bill at the restaurant")
-				.build();
-
-	}
-
-	/**
-	 * Method that simulates the retrieval of an ApplicantAggregate. This would usually be done with a Respository
-	 * (which is not the scope of this demo project)
-	 *
-	 * @return a fully initialized ApplicantAggregate
-	 */
-	private ApplicantAggregate loadApplicant(ApplicationNumber applicationNumber) {
-		return new ApplicantAggregate.ApplicantAggregateBuilder(applicationNumber)
-				.city("Munich")
-				.firstName("Michael")
-				.lastName("Plöd")
-				.postCode("80331")
-				.street("Kreuzstrasse 16")
-				.accountBalance(12000)
-				.build();
-
-	}
-
-
-	/**
-	 * Method that simulates the retrieval of an FinancialSituationAggregate. This would usually be done with a Respository
-	 * (which is not the scope of this demo project)
-	 *
-	 * @return a fully initialized FinancialSituationAggregate
-	 */
-	private FinancialSituationAggregate loadFinancialSituation(ApplicationNumber applicationNumber) {
-		return new FinancialSituationAggregate.FinancialSituationBuilder(applicationNumber)
-				.salary(2500)
-				.rent(800)
-				.otherIncome(200)
-				.costOfLiving(400)
-				.build();
-	}
 }

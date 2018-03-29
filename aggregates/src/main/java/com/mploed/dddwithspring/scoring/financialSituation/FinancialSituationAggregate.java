@@ -3,7 +3,7 @@ package com.mploed.dddwithspring.scoring.financialSituation;
 import com.mploed.dddwithspring.scoring.ApplicationNumber;
 
 public class FinancialSituationAggregate {
-	private FinancialSituationRootEntity rootEntity;
+	FinancialSituationRootEntity rootEntity;
 
 	private FinancialSituationAggregate(FinancialSituationBuilder builder) {
 		Incomings incomings = new Incomings(builder.salary, builder.otherIncome);

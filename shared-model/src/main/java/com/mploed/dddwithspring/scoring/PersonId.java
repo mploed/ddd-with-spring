@@ -6,6 +6,9 @@ import java.security.NoSuchAlgorithmException;
 public class PersonId {
 	private String personId;
 
+	public PersonId(String personId) {
+		this.personId = personId;
+	}
 	private PersonId(PersonIdBuilder builder) {
 		try {
 			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");

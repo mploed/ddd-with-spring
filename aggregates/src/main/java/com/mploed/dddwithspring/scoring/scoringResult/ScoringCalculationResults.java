@@ -1,12 +1,12 @@
 package com.mploed.dddwithspring.scoring.scoringResult;
 
 class ScoringCalculationResults {
-	private int applicantScoringResult;
-	private int financialSituationScoringResult;
-	private int agencyScoringResult;
-	private boolean noGoCriteriaPresent;
+	final int applicantScoringResult;
+	final int financialSituationScoringResult;
+	final int agencyScoringResult;
+	final boolean noGoCriteriaPresent;
 
-	public ScoringCalculationResults(int applicantScoringResult, int financialSituationScoringResult, int agencyScoringResult, boolean noGoCriteriaPresent) {
+	ScoringCalculationResults(int applicantScoringResult, int financialSituationScoringResult, int agencyScoringResult, boolean noGoCriteriaPresent) {
 		this.applicantScoringResult = applicantScoringResult;
 		this.financialSituationScoringResult = financialSituationScoringResult;
 		this.agencyScoringResult = agencyScoringResult;

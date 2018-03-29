@@ -4,7 +4,7 @@ package com.mploed.dddwithspring.scoring.financialSituation;
 import com.mploed.dddwithspring.scoring.ApplicationNumber;
 
 class FinancialSituationRootEntity {
-	private final ApplicationNumber applicationNumber;
+	final ApplicationNumber applicationNumber;
 
 	private final Incomings incomings;
 	private final Outgoings outgoings;

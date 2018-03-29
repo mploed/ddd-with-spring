@@ -5,7 +5,7 @@ import com.mploed.dddwithspring.scoring.ApplicationNumber;
 import com.mploed.dddwithspring.scoring.PersonId;
 
 public class ApplicantAggregate {
-	private ApplicantRootEntity applicantRootEntity;
+	 ApplicantRootEntity applicantRootEntity;
 
 
 	private ApplicantAggregate(ApplicantAggregateBuilder builder) {

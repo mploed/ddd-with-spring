@@ -5,8 +5,8 @@ import com.mploed.dddwithspring.scoring.ApplicationNumber;
 import com.mploed.dddwithspring.scoring.PersonId;
 
 class ApplicantRootEntity {
-	private final PersonId personId;
-	private final ApplicationNumber applicationNumber;
+	final PersonId personId;
+	final ApplicationNumber applicationNumber;
 	private final String name;
 	private final String lastName;
 	private final Address address;

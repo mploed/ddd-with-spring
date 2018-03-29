@@ -1,9 +1,6 @@
 package com.mploed.dddwithspring.scoring.scoringResult;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "SCORING_RESULT")
@@ -12,16 +9,20 @@ public class ScoringResultEntity {
 	@GeneratedValue
 	private Long id;
 
+	private String applicationNumber;
+
 	private int scorePoints;
 
 	private String scoreColor;
 
-	private String applicationNumber;
+	@Embedded
+	private DetailedScoringResults detailedScoringResults;
 
-	public ScoringResultEntity(int scorePoints, String scoreColor, String applicationNumber) {
+	public ScoringResultEntity(String applicationNumber, int scorePoints, String scoreColor, DetailedScoringResults detailedScoringResults) {
+		this.applicationNumber = applicationNumber;
 		this.scorePoints = scorePoints;
 		this.scoreColor = scoreColor;
-		this.applicationNumber = applicationNumber;
+		this.detailedScoringResults = detailedScoringResults;
 	}
 
 	private ScoringResultEntity() {
@@ -41,5 +42,9 @@ public class ScoringResultEntity {
 
 	public String getApplicationNumber() {
 		return applicationNumber;
+	}
+
+	public DetailedScoringResults getDetailedScoringResults() {
+		return detailedScoringResults;
 	}
 }

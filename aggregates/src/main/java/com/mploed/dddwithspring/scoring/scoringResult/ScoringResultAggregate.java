@@ -4,7 +4,7 @@ package com.mploed.dddwithspring.scoring.scoringResult;
 import com.mploed.dddwithspring.scoring.ApplicationNumber;
 
 public class ScoringResultAggregate {
-	ScoringResultRootEntity rootEntity;
+	final ScoringResultRootEntity rootEntity;
 	private ScoringResultAggregate(Builder builder) {
 		this.rootEntity = new ScoringResultRootEntity(builder.applicationNumber,
 													builder.applicantScoringResult,
@@ -14,11 +14,11 @@ public class ScoringResultAggregate {
 	}
 
 	public String getScoreColor() {
-		return this.rootEntity.getOverallScoringResult().getColor().toString();
+		return this.rootEntity.overallScoringResult.color.toString();
 	}
 
 	public int getScorePoints() {
-		return this.rootEntity.getOverallScoringResult().getPoints();
+		return this.rootEntity.overallScoringResult.points;
 	}
 
 	public static class Builder {

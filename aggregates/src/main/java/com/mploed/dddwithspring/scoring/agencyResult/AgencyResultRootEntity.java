@@ -7,8 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 class AgencyResultRootEntity {
-	private final PersonId id;
-	private final int points;
+	final PersonId id;
+	final int points;
 	private final Set<KoCriteria> koCriteria;
 	private final Set<WarningMessage> warningMessages;
 
