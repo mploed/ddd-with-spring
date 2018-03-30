@@ -29,11 +29,13 @@ public class IncomingMessageListener {
 
 	@StreamListener(ApplicationProcessChannels.FINANCIAL_SITUATION_ENTERED)
 	public void receiveFinancialSituation(@Payload FinancialSituationEnteredEvent financialSituationEnteredEvent) {
+		scoringApplicationService.scoreFinancialSituation(financialSituationEnteredEvent);
 
 	}
 
 	@StreamListener(ApplicationProcessChannels.APPLICATION_SUBMITTED)
 	public void receiveApplicationSubmission(@Payload ApplicationSubmittedEvent applicationSubmittedEvent) {
+		scoringApplicationService.performFinalScoring(applicationSubmittedEvent);
 
 	}
 
