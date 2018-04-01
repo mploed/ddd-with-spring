@@ -4,15 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mploed.dddwithspring</groupId>
-	<artifactId>scoring</artifactId>
+	<artifactId>parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
     <modules>
-		<module>shared-model</module>
-		<module>adapters</module>
-		<module>aggregates</module>
-
-		<module>springbootapp</module>
-	</modules>
+        <module>credit-sales-funnel</module>
+        <module>scoring</module>
+    </modules>
     <packaging>pom</packaging>
 
 	<name>ddd-with-spring</name>
