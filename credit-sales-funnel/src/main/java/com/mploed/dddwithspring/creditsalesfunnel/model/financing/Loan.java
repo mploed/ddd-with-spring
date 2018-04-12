@@ -8,6 +8,10 @@ public class Loan implements Serializable {
 	private int repaymentInPercent;
 	private int fixedInterestRateInYears;
 
+	public Loan() {
+		this.interestRate = 2;
+	}
+
 	public int getLoanAmount() {
 		return loanAmount;
 	}

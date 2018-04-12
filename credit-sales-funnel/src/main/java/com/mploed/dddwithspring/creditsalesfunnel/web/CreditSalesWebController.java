@@ -2,6 +2,7 @@ package com.mploed.dddwithspring.creditsalesfunnel.web;
 
 import com.mploed.dddwithspring.creditsalesfunnel.model.CreditApplicationForm;
 import com.mploed.dddwithspring.creditsalesfunnel.model.applicant.Applicant;
+import com.mploed.dddwithspring.creditsalesfunnel.model.financing.Financing;
 import com.mploed.dddwithspring.creditsalesfunnel.model.household.Household;
 import com.mploed.dddwithspring.creditsalesfunnel.model.realEstate.RealEstateProperty;
 import org.slf4j.Logger;
@@ -53,6 +54,10 @@ public class CreditSalesWebController {
 		return "realEstateProperty";
 	}
 
-
+	@GetMapping(path = "/application/{applicationNumber}/financing")
+	public String financing(Model model, @PathVariable String applicationNumber) {
+		model.addAttribute("financing", new Financing(applicationNumber));
+		return "financing";
+	}
 
 }
