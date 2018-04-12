@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>Big Pug Loans</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"/>
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous"/>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<!-- Fixed navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Big Pug Loans</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+<div class="container theme-showcase" role="main">
+
+    <div class="page-header">
+        <h4>Application Number: <span th:text="${applicationNumber}"/></h4>
+    </div>
+    <form action="#" th:action="@{saveHousehold}" th:object="${household}" method="POST">
+        <input type="hidden" id="applicationNumber" th:field="*{applicationNumber}"/>
+        <h2>Household - General Information</h2>
+        <div class="form-group">
+            <label for="adults">Number of adults in household</label>
+            <input class="form-control" id="adults" type="text" th:field="*{adultsInHousehold}"/>
+        </div>
+        <div class="form-group">
+            <label for="children">Number of children in household</label>
+            <input class="form-control" id="children" type="text" th:field="*{childrenInHousehold}"/>
+        </div>
+        <div class="form-group">
+            <label for="iban">IBAN</label>
+            <input class="form-control" id="iban" type="text" th:field="*{iban}"/>
+        </div>
+        <div class="form-group">
+            <label for="bic">BIC</label>
+            <input class="form-control" id="bic" type="text" th:field="*{bic}"/>
+        </div>
+        <h2>Household - Earning Capacity</h2>
+        <div class="form-group">
+            <label for="salaryFirst">Salary of first applicant</label>
+            <input class="form-control" id="salaryFirst" type="text" th:field="*{earningCapacity.salaryFirstApplicant}"/>
+        </div>
+        <div class="form-group">
+            <label for="salarySecond">Salary of second applicant</label>
+            <input class="form-control" id="salarySecond" type="text" th:field="*{earningCapacity.salarySecondApplicant}"/>
+        </div>
+        <div class="form-group">
+            <label for="rentalFinanced">Rental income of financed property</label>
+            <input class="form-control" id="rentalFinanced" type="text" th:field="*{earningCapacity.rentalIncomeFinancedProperty}"/>
+        </div>
+        <div class="form-group">
+            <label for="rentalOther">Rental income of other properties</label>
+            <input class="form-control" id="rentalOther" type="text" th:field="*{earningCapacity.rentalIncomeOtherProperties}"/>
+        </div>
+        <div class="form-group">
+            <label for="furtherIncome">Further income</label>
+            <input class="form-control" id="furtherIncome" type="text" th:field="*{earningCapacity.furtherIncome}"/>
+        </div>
+        <div class="form-group">
+            <label for="childBenefit">Child Benefit</label>
+            <input class="form-control" id="childBenefit" type="text" th:field="*{earningCapacity.childBenefit}"/>
+        </div>
+        <div class="form-group">
+            <label for="assetsBank">Assets on bank accounts</label>
+            <input class="form-control" id="assetsBank" type="text" th:field="*{earningCapacity.assetsOnBankAccounts}"/>
+        </div>
+        <div class="form-group">
+            <label for="assetsOther">Other assets</label>
+            <input class="form-control" id="assetsOther" type="text" th:field="*{earningCapacity.assetsOther}"/>
+        </div>
+        <h2>Household - Monthly Expenses</h2>
+        <div class="form-group">
+            <label for="healthFirst">Health insurance of first applicant</label>
+            <input class="form-control" id="healthFirst" type="text" th:field="*{monthlyExpenses.healthInsuranceFirstApplicant}"/>
+        </div>
+        <div class="form-group">
+            <label for="healthSecond">Health insurance of second applicant</label>
+            <input class="form-control" id="healthSecond" type="text" th:field="*{monthlyExpenses.healthInsuranceSecondApplicant}"/>
+        </div>
+        <div class="form-group">
+            <label for="remainderDebt">Other loans: Remainder of debt</label>
+            <input class="form-control" id="remainderDebt" type="text" th:field="*{monthlyExpenses.otherLoansRemainderOfDebt}"/>
+        </div>
+        <div class="form-group">
+            <label for="monthlyLoanPayment">Other loans: monthly Repayments</label>
+            <input class="form-control" id="monthlyLoanPayment" type="text" th:field="*{monthlyExpenses.otherLoansMonthlyRepayments}"/>
+        </div>
+        <div class="form-group">
+            <label for="costOfLiving">Cost Of Living</label>
+            <input class="form-control" id="costOfLiving" type="text" th:field="*{monthlyExpenses.costOfLiving}"/>
+        </div>
+        <div class="form-group">
+            <label for="rent">Rent</label>
+            <input class="form-control" id="rent" type="text" th:field="*{monthlyExpenses.rent}"/>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input id="rentNotApplicable" type="checkbox" th:field="*{monthlyExpenses.rentNotApplicableInFuture}"/>
+                    Rent not applicable in the future
+                </label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-default">Save</button>
+
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>Big Loan Pugs</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"/>
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous"/>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="jumbotron">
+    <div class="container">
+        <img class="img-responsive" src="/BigPugLoans.jpg"/>
+    </div>
+</div>
+<div class="container">
+
+    <h1>Thank you, we will get back to you</h1>
+
+    <h3>The status of your current application is:</h3>
+
+
+    <table class="table table-striped">
+        <tr>
+            <td>Application Number</td>
+            <td th:text="${status.applicationNumber}"/>
+        </tr>
+        <tr>
+            <td>Start of Application</td>
+            <td th:text="${status.applicationStart}"/>
+        </tr>
+        <tr>
+            <td>Credit Application Entered</td>
+            <td th:text="${status.creditApplicationEntered}"/>
+        </tr>
+        <tr>
+            <td>Customer Entered</td>
+            <td th:text="${status.customerEntered}"/>
+        </tr>
+        <tr>
+            <td>Scoring Performed</td>
+            <td th:text="${status.scoringDoneDate}"/>
+        </tr>
+        <tr>
+            <td>Scoring Result</td>
+            <td th:text="${status.scoringResult}"/>
+        </tr>
+        <tr>
+            <td>Credit Application Approved</td>
+            <td th:text="${status.approved}"/>
+        </tr>
+    </table>
+
+    <a class="btn btn-lg" href="/">Start again</a>
+</div>
+</body>
+</html>

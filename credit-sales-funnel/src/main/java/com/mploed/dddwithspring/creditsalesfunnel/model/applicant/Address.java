@@ -7,11 +7,6 @@ public class Address implements Serializable {
 	private String postCode;
 	private String city;
 
-	public Address(String street, String postCode, String city) {
-		this.street = street;
-		this.postCode = postCode;
-		this.city = city;
-	}
 
 	public String getStreet() {
 		return street;
@@ -23,5 +18,17 @@ public class Address implements Serializable {
 
 	public String getCity() {
 		return city;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public void setPostCode(String postCode) {
+		this.postCode = postCode;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 }

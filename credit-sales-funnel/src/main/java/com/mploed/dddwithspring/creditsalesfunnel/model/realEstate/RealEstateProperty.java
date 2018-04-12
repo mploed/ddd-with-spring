@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Set;
 
 public class RealEstateProperty implements Serializable {
+	private String applicationNumber;
 	private String street;
 	private String houseNumber;
 	private String postCode;
@@ -26,6 +27,20 @@ public class RealEstateProperty implements Serializable {
 	private Date lastModernization;
 
 	private ApartmentInformation apartmentInformation;
+
+	public RealEstateProperty(String applicationNumber) {
+		this.apartmentInformation = new ApartmentInformation();
+		this.applicationNumber = applicationNumber;
+	}
+
+	private RealEstateProperty() {
+		this.apartmentInformation = new ApartmentInformation();
+	}
+
+	public String getApplicationNumber() {
+		return applicationNumber;
+	}
+
 
 	public String getStreet() {
 		return street;

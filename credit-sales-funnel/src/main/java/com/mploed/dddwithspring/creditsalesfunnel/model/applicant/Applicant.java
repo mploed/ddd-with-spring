@@ -2,9 +2,11 @@ package com.mploed.dddwithspring.creditsalesfunnel.model.applicant;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 public class Applicant implements Serializable {
 	private String applicationNumber;
+	private String applicantNumber;
 	private String customerNumber;
 	private String firstName;
 	private String lastName;
@@ -17,6 +19,40 @@ public class Applicant implements Serializable {
 	private String employer;
 	private Date employedSince;
 	private Date birthday;
+
+	public Applicant(String applicationNumber, String applicantNumber) {
+		this.address = new Address();
+		this.applicationNumber = applicationNumber;
+		this.applicantNumber = applicantNumber;
+
+	}
+
+	public Applicant() {
+		this.address = new Address();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Applicant applicant = (Applicant) o;
+		return Objects.equals(applicationNumber, applicant.applicationNumber) &&
+				Objects.equals(applicantNumber, applicant.applicantNumber);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(applicationNumber, applicantNumber);
+	}
+
+	public String getApplicantNumber() {
+		return applicantNumber;
+	}
+
+	public void setApplicantNumber(String applicantNumber) {
+		this.applicantNumber = applicantNumber;
+	}
 
 	public String getApplicationNumber() {
 		return applicationNumber;
