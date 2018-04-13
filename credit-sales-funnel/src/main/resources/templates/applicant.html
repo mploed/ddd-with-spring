@@ -51,74 +51,114 @@
         <input type="hidden" id="applicationNumber" th:field="*{applicationNumber}"/>
         <input type="hidden" id="applicantNumber" th:field="*{applicantNumber}"/>
         <h2>Applicant <span th:text="${applicantNumber}"/></h2>
-        <div class="form-group">
-            <label for="firstName">Customer Number at Big Pug Bank</label>
-            <input class="form-control" id="customerNumber" type="text" th:field="*{customerNumber}"/>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="customerNumber">Customer Number at Big Pug Bank</label>
+                    <input class="form-control" id="customerNumber" type="text" th:field="*{customerNumber}"/>
+                </div>
+            </div>
+            <div class="col-md-6"></div>
         </div>
-        <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input class="form-control" id="firstName" type="text" th:field="*{firstName}"/>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input class="form-control" id="firstName" type="text" th:field="*{firstName}"/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input class="form-control" id="lastName" type="text" th:field="*{lastName}"/>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <input class="form-control" id="lastName" type="text" th:field="*{lastName}"/>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="street">Street</label>
+                    <input class="form-control" id="street" type="text" th:field="*{address.street}"/>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="street">Street</label>
-            <input class="form-control" id="street" type="text" th:field="*{address.street}"/>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="postCode">Postcode</label>
+                    <input class="form-control" id="postCode" type="text" th:field="*{address.postCode}"/>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input class="form-control" id="city" type="text" th:field="*{address.city}"/>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="postCode">Postcode</label>
-            <input class="form-control" id="postCode" type="text" th:field="*{address.postCode}"/>
-        </div>
-        <div class="form-group">
-            <label for="city">City</label>
-            <input class="form-control" id="city" type="text" th:field="*{address.city}"/>
-        </div>
-        <div class="form-group">
-            <label for="martialStatus">Martial Status</label>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="martialStatus">Martial Status</label>
 
-            <select id="martialStatus" class="form-control"  th:field="*{martialStatus}">
-                <option value=""></option>
-                <option th:each="martialStatus : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.applicant.MartialStatus).values()}"
-                        th:value="${martialStatus}"
-                        th:text="${martialStatus}">
-                </option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="business">Business</label>
-
-            <select id="business" class="form-control"  th:field="*{business}">
-                <option th:each="business : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.applicant.Business).values()}"
-                        th:value="${business}"
-                        th:text="${business}">
-                </option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="employment">Employment</label>
-
-            <select id="employment" class="form-control" th:field="*{employment}">
-                <option th:each="employment : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.applicant.Employment).values()}"
-                        th:value="${employment}"
-                        th:text="${employment}">
-                </option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="employer">Employer</label>
-            <input class="form-control" id="employer" type="text" th:field="*{employer}"/>
-        </div>
-        <div class="form-group">
-            <label for="employedSince">Employed Since (Format: dd.mm.yyyy)</label>
-            <input class="form-control" id="employedSince" type="date" th:field="*{employedSince}"/>
-        </div>
-        <div class="form-group">
-            <label for="birthday">Birthday (Format: dd.mm.yyyy)</label>
-            <input class="form-control" id="birthday" type="date" th:field="*{birthday}"/>
+                    <select id="martialStatus" class="form-control"  th:field="*{martialStatus}">
+                        <option value=""></option>
+                        <option th:each="martialStatus : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.applicant.MartialStatus).values()}"
+                                th:value="${martialStatus}"
+                                th:text="${martialStatus}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="birthday">Birthday (Format: dd.mm.yyyy)</label>
+                    <input class="form-control" id="birthday" type="date" th:field="*{birthday}"/>
+                </div>
+            </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="business">Business</label>
+
+                    <select id="business" class="form-control"  th:field="*{business}">
+                        <option th:each="business : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.applicant.Business).values()}"
+                                th:value="${business}"
+                                th:text="${business}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="employment">Employment</label>
+
+                    <select id="employment" class="form-control" th:field="*{employment}">
+                        <option th:each="employment : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.applicant.Employment).values()}"
+                                th:value="${employment}"
+                                th:text="${employment}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="employer">Employer</label>
+                    <input class="form-control" id="employer" type="text" th:field="*{employer}"/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="employedSince">Employed Since (Format: dd.mm.yyyy)</label>
+                    <input class="form-control" id="employedSince" type="date" th:field="*{employedSince}"/>
+                </div>
+            </div>
+        </div>
         <button type="submit" class="btn btn-default">Proceed</button>
 
     </form>
