@@ -45,8 +45,9 @@
     <div class="page-header">
         <h4>Application Number: <span th:text="${applicationNumber}"/></h4>
     </div>
-    <form action="#" th:action="@{saveHousehold}" th:object="${household}" method="POST">
+    <form th:action="@{/application/__${applicationNumber}__/household}" th:object="${household}" method="POST">
         <input type="hidden" id="applicationNumber" th:field="*{applicationNumber}"/>
+        <input type="hidden" id="databaseId" th:field="*{databaseId}"/>
         <h2>Household - General Information</h2>
         <div class="form-group">
             <label for="adults">Number of adults in household</label>

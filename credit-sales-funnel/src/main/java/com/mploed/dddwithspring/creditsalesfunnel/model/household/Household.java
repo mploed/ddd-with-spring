@@ -1,15 +1,22 @@
 package com.mploed.dddwithspring.creditsalesfunnel.model.household;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Entity
 public class Household implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE)
+	private Long databaseId;
 	private String applicationNumber;
 	private int adultsInHousehold;
 	private int childrenInHousehold;
 	private String iban;
 	private String bic;
+	@Embedded
 	private EarningCapacity earningCapacity;
+	@Embedded
 	private MonthlyExpenses monthlyExpenses;
 
 
@@ -21,6 +28,7 @@ public class Household implements Serializable {
 		this.monthlyExpenses = new MonthlyExpenses();
 		this.applicationNumber = applicationNumber;
 	}
+
 
 	@Override
 	public boolean equals(Object o) {
@@ -34,6 +42,14 @@ public class Household implements Serializable {
 	public int hashCode() {
 
 		return Objects.hash(applicationNumber);
+	}
+
+	public Long getDatabaseId() {
+		return databaseId;
+	}
+
+	public void setDatabaseId(Long databaseId) {
+		this.databaseId = databaseId;
 	}
 
 	public EarningCapacity getEarningCapacity() {

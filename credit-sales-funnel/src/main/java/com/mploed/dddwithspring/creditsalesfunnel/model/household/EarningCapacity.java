@@ -1,7 +1,9 @@
 package com.mploed.dddwithspring.creditsalesfunnel.model.household;
 
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+@Embeddable
 public class EarningCapacity implements Serializable {
 	private int salaryFirstApplicant;
 	private int salarySecondApplicant;

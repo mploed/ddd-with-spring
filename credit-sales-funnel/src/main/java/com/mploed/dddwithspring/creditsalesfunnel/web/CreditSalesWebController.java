@@ -7,6 +7,7 @@ import com.mploed.dddwithspring.creditsalesfunnel.model.household.Household;
 import com.mploed.dddwithspring.creditsalesfunnel.model.realEstate.RealEstateProperty;
 import com.mploed.dddwithspring.creditsalesfunnel.repository.ApplicantRepository;
 import com.mploed.dddwithspring.creditsalesfunnel.repository.FinancingRepository;
+import com.mploed.dddwithspring.creditsalesfunnel.repository.HouseholdRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,13 @@ public class CreditSalesWebController {
 
 	private FinancingRepository financingRepository;
 
+	private HouseholdRepository householdRepository;
+
 	@Autowired
-	public CreditSalesWebController(ApplicantRepository applicantRepository, FinancingRepository financingRepository) {
+	public CreditSalesWebController(ApplicantRepository applicantRepository, FinancingRepository financingRepository, HouseholdRepository householdRepository) {
 		this.applicantRepository = applicantRepository;
 		this.financingRepository = financingRepository;
+		this.householdRepository = householdRepository;
 	}
 
 	@GetMapping(path = "/")
@@ -69,8 +73,18 @@ public class CreditSalesWebController {
 
 	@GetMapping(path = "/application/{applicationNumber}/household")
 	public String household(Model model, @PathVariable String applicationNumber) {
-		model.addAttribute("household", new Household(applicationNumber));
+		Household household = householdRepository.findByApplicationNumber(applicationNumber);
+		if(household == null) {
+			household = new Household(applicationNumber);
+		}
+		model.addAttribute("household", household);
 		return "household";
+	}
+
+	@PostMapping(path = "/application/{applicationNumber}/household")
+	public RedirectView saveHousehold(@ModelAttribute Household household, @PathVariable String applicationNumber) {
+		householdRepository.save(household);
+		return new RedirectView("/application/" + applicationNumber);
 	}
 
 	@GetMapping(path = "/application/{applicationNumber}/realEstateProperty")
