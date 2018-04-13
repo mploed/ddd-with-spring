@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class Loan implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
-	private long databaseId;
+	private Long databaseId;
 	private int loanAmount;
 	private int interestRate;
 	private int repaymentInPercent;
@@ -20,11 +20,11 @@ public class Loan implements Serializable {
 		this.interestRate = 2;
 	}
 
-	public long getDatabaseId() {
+	public Long getDatabaseId() {
 		return databaseId;
 	}
 
-	public void setDatabaseId(long databaseId) {
+	public void setDatabaseId(Long databaseId) {
 		this.databaseId = databaseId;
 	}
 
