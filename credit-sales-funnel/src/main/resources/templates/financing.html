@@ -55,36 +55,75 @@
             <label for="financingNeeds">Financing needs</label>
             <input class="form-control" id="financingNeeds" type="text" th:field="*{financingNeeds}"/>
         </div>
-        <h2>Own Resources</h2>
-        <div class="form-group">
-            <label for="liquidAssets">Liquid assets</label>
-            <input class="form-control" id="liquidAssets" type="text" th:field="*{ownResources.liquidAssets}"/>
+        <div class="row">
+            <div class="col-md-6"><h2>Own Resources</h2></div>
+            <div class="col-md-6"><h2>Purchase costs</h2></div>
         </div>
-        <div class="form-group">
-            <label for="balanceFromBuildingSociety">Credit balances from the building society savings</label>
-            <input class="form-control" id="balanceFromBuildingSociety" type="text" th:field="*{ownResources.balanceFromBuildingSociety}"/>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="liquidAssets">Liquid assets</label>
+                    <input class="form-control" id="liquidAssets" type="text" th:field="*{ownResources.liquidAssets}"/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="priceOfLand">Price of land</label>
+                    <input class="form-control" id="priceOfLand" type="text" th:field="*{purchaseCosts.priceOfLand}"/>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="ownManpower">Own manpower in construction</label>
-            <input class="form-control" id="ownManpower" type="text" th:field="*{ownResources.ownManpower}"/>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="balanceFromBuildingSociety">Credit balances from the building society savings</label>
+                    <input class="form-control" id="balanceFromBuildingSociety" type="text" th:field="*{ownResources.balanceFromBuildingSociety}"/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="purchasePrice">Purchase price</label>
+                    <input class="form-control" id="purchasePrice" type="text" th:field="*{purchaseCosts.purchasePrice}"/>
+                </div>
+            </div>
         </div>
-        <h2>Purchase costs</h2>
-        <div class="form-group">
-            <label for="priceOfLand">Price of land</label>
-            <input class="form-control" id="priceOfLand" type="text" th:field="*{purchaseCosts.priceOfLand}"/>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="ownManpower">Own manpower in construction</label>
+                    <input class="form-control" id="ownManpower" type="text" th:field="*{ownResources.ownManpower}"/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="reconstructionCosts">Reconstruction costs</label>
+                    <input class="form-control" id="reconstructionCosts" type="text" th:field="*{purchaseCosts.reconstructionCosts}"/>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="purchasePrice">Purchase price</label>
-            <input class="form-control" id="purchasePrice" type="text" th:field="*{purchaseCosts.purchasePrice}"/>
+
+        <div class="row">
+            <div class="col-md-6">&nbsp;</div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="additionalPurchaseCharges">Additional purchase charges (tax, solicitor)</label>
+                    <input class="form-control" id="additionalPurchaseCharges" type="text" th:field="*{purchaseCosts.additionalPurchaseCharges}"/>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="reconstructionCosts">Reconstruction costs</label>
-            <input class="form-control" id="reconstructionCosts" type="text" th:field="*{purchaseCosts.reconstructionCosts}"/>
-        </div>
-        <div class="form-group">
-            <label for="additionalPurchaseCharges">Additional purchase charges (tax, solicitor)</label>
-            <input class="form-control" id="additionalPurchaseCharges" type="text" th:field="*{purchaseCosts.additionalPurchaseCharges}"/>
-        </div>
+
+
+
+
+
+
+
+
+
+
 
         <h2>Loans</h2>
         <table class="table">
@@ -104,8 +143,30 @@
                 <th scope="row"><span th:text="${rowStat.index + 1}"/> </th>
                 <td><input class="form-control" type="text" th:field="*{loans[__${rowStat.index}__].loanAmount}" /></td>
                 <td><input class="form-control" readonly type="text" th:field="*{loans[__${rowStat.index}__].interestRate}" /></td>
-                <td><input class="form-control" type="text" th:field="*{loans[__${rowStat.index}__].repaymentInPercent}" /></td>
-                <td><input class="form-control" type="text" th:field="*{loans[__${rowStat.index}__].fixedInterestRateInYears}" /></td>
+                <td>
+                    <select class="form-control" th:field="*{loans[__${rowStat.index}__].repaymentInPercent}">
+                        <option value="0"></option>
+                        <option value="1">1 %</option>
+                        <option value="2">2 %</option>
+                        <option value="3">3 %</option>
+                        <option value="4">4 %</option>
+                        <option value="5">5 %</option>
+                        <option value="6">6 %</option>
+                        <option value="7">7 %</option>
+                        <option value="8">8 %</option>
+                        <option value="9">9 %</option>
+                        <option value="10">10 %</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control" th:field="*{loans[__${rowStat.index}__].fixedInterestRateInYears}">
+                        <option value="0"></option>
+                        <option value="5">5 years</option>
+                        <option value="10">10 years</option>
+                        <option value="15">15 years</option>
+                        <option value="20">20 years</option>
+                    </select>
+                </td>
             </tr>
             </tbody>
 
@@ -116,5 +177,7 @@
 
     </form>
 </div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </body>
 </html>
