@@ -6,6 +6,7 @@ import com.mploed.dddwithspring.creditsalesfunnel.model.financing.Financing;
 import com.mploed.dddwithspring.creditsalesfunnel.model.household.Household;
 import com.mploed.dddwithspring.creditsalesfunnel.model.realEstate.RealEstateProperty;
 import com.mploed.dddwithspring.creditsalesfunnel.repository.ApplicantRepository;
+import com.mploed.dddwithspring.creditsalesfunnel.repository.FinancingRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,12 @@ public class CreditSalesWebController {
 
 	private ApplicantRepository applicantRepository;
 
+	private FinancingRepository financingRepository;
+
 	@Autowired
-	public CreditSalesWebController(ApplicantRepository applicantRepository) {
+	public CreditSalesWebController(ApplicantRepository applicantRepository, FinancingRepository financingRepository) {
 		this.applicantRepository = applicantRepository;
+		this.financingRepository = financingRepository;
 	}
 
 	@GetMapping(path = "/")
@@ -77,8 +81,18 @@ public class CreditSalesWebController {
 
 	@GetMapping(path = "/application/{applicationNumber}/financing")
 	public String financing(Model model, @PathVariable String applicationNumber) {
-		model.addAttribute("financing", new Financing(applicationNumber));
+		Financing financing = financingRepository.findByApplicationNumber(applicationNumber);
+		if(financing == null) {
+			financing = new Financing(applicationNumber);
+		}
+		model.addAttribute("financing", financing);
 		return "financing";
+	}
+
+	@PostMapping(path = "/application/{applicationNumber}/financing")
+	public RedirectView saveFinancing(@ModelAttribute Financing financing, @PathVariable String applicationNumber) {
+		financingRepository.save(financing);
+		return new RedirectView("/application/" + applicationNumber);
 	}
 
 }

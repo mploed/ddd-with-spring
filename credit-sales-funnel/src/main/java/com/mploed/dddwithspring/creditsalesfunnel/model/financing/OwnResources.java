@@ -1,7 +1,9 @@
 package com.mploed.dddwithspring.creditsalesfunnel.model.financing;
 
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+@Embeddable
 public class OwnResources implements Serializable {
 	private int liquidAssets;
 	private int balanceFromBuildingSociety;

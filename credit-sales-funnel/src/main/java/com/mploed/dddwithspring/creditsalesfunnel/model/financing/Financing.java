@@ -1,14 +1,26 @@
 package com.mploed.dddwithspring.creditsalesfunnel.model.financing;
 
+import org.hibernate.annotations.IndexColumn;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Financing implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE)
+	private Long databaseId;
 	private String applicationNumber;
 	private int financingNeeds;
+
+	@Embedded
 	private OwnResources ownResources;
+	@Embedded
 	private PurchaseCosts purchaseCosts;
+
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Loan> loans;
 
 	public Financing(String applicationNumber) {
@@ -30,6 +42,18 @@ public class Financing implements Serializable {
 		loans.add(new Loan());
 		loans.add(new Loan());
 		loans.add(new Loan());
+	}
+
+	public Long getDatabaseId() {
+		return databaseId;
+	}
+
+	public void setDatabaseId(Long databaseId) {
+		this.databaseId = databaseId;
+	}
+
+	public void setApplicationNumber(String applicationNumber) {
+		this.applicationNumber = applicationNumber;
 	}
 
 	public String getApplicationNumber() {

@@ -1,7 +1,9 @@
 package com.mploed.dddwithspring.creditsalesfunnel.model.financing;
 
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+@Embeddable
 public class PurchaseCosts implements Serializable {
 	private int priceOfLand;
 	private int purchasePrice;
