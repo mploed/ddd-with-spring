@@ -8,6 +8,7 @@ import com.mploed.dddwithspring.creditsalesfunnel.model.realEstate.RealEstatePro
 import com.mploed.dddwithspring.creditsalesfunnel.repository.ApplicantRepository;
 import com.mploed.dddwithspring.creditsalesfunnel.repository.FinancingRepository;
 import com.mploed.dddwithspring.creditsalesfunnel.repository.HouseholdRepository;
+import com.mploed.dddwithspring.creditsalesfunnel.repository.RealEstatePropertyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +29,14 @@ public class CreditSalesWebController {
 
 	private HouseholdRepository householdRepository;
 
+	private RealEstatePropertyRepository realEstatePropertyRepository;
+
 	@Autowired
-	public CreditSalesWebController(ApplicantRepository applicantRepository, FinancingRepository financingRepository, HouseholdRepository householdRepository) {
+	public CreditSalesWebController(ApplicantRepository applicantRepository, FinancingRepository financingRepository, HouseholdRepository householdRepository, RealEstatePropertyRepository realEstatePropertyRepository) {
 		this.applicantRepository = applicantRepository;
 		this.financingRepository = financingRepository;
 		this.householdRepository = householdRepository;
+		this.realEstatePropertyRepository = realEstatePropertyRepository;
 	}
 
 	@GetMapping(path = "/")
@@ -53,7 +57,6 @@ public class CreditSalesWebController {
 		model.addAttribute("applicationNumber", applicationNumber);
 		return "applicationOverview";
 	}
-
 
 	@GetMapping(path = "/application/{applicationNumber}/applicant/{applicantNumber}")
 	public String applicant(Model model, @PathVariable String applicationNumber, @PathVariable String applicantNumber) {
@@ -89,8 +92,18 @@ public class CreditSalesWebController {
 
 	@GetMapping(path = "/application/{applicationNumber}/realEstateProperty")
 	public String realEstateProperty(Model model, @PathVariable String applicationNumber) {
-		model.addAttribute("realEstateProperty", new RealEstateProperty(applicationNumber));
+		RealEstateProperty realEstateProperty = realEstatePropertyRepository.findByApplicationNumber(applicationNumber);
+		if(realEstateProperty == null) {
+			realEstateProperty = new RealEstateProperty(applicationNumber);
+		}
+		model.addAttribute("realEstateProperty", realEstateProperty);
 		return "realEstateProperty";
+	}
+
+	@PostMapping(path = "/application/{applicationNumber}/realEstateProperty")
+	public RedirectView saveRealEstateProperty(@ModelAttribute RealEstateProperty realEstateProperty, @PathVariable String applicationNumber) {
+		realEstatePropertyRepository.save(realEstateProperty);
+		return new RedirectView("/application/" + applicationNumber);
 	}
 
 	@GetMapping(path = "/application/{applicationNumber}/financing")

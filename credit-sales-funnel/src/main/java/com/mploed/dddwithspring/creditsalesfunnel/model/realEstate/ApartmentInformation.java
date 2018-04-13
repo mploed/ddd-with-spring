@@ -1,7 +1,9 @@
 package com.mploed.dddwithspring.creditsalesfunnel.model.realEstate;
 
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+@Embeddable
 public class ApartmentInformation implements Serializable {
 	private int numberOfApartmentsInHouse;
 	private String nameOfApartment;

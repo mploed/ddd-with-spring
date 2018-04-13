@@ -1,10 +1,17 @@
 package com.mploed.dddwithspring.creditsalesfunnel.model.realEstate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
+@Entity
 public class RealEstateProperty implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE)
+	private Long databaseId;
 	private String applicationNumber;
 	private String street;
 	private String houseNumber;
@@ -22,10 +29,13 @@ public class RealEstateProperty implements Serializable {
 
 	private Attic attic;
 	private Basement basement;
+	@ElementCollection
 	private Set<Feature> features;
 	private int numberOfFloors;
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date lastModernization;
-
+	@Embedded
 	private ApartmentInformation apartmentInformation;
 
 	public RealEstateProperty(String applicationNumber) {
@@ -35,6 +45,14 @@ public class RealEstateProperty implements Serializable {
 
 	private RealEstateProperty() {
 		this.apartmentInformation = new ApartmentInformation();
+	}
+
+	public Long getDatabaseId() {
+		return databaseId;
+	}
+
+	public void setDatabaseId(Long databaseId) {
+		this.databaseId = databaseId;
 	}
 
 	public String getApplicationNumber() {
