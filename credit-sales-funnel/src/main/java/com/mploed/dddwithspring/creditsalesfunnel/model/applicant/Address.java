@@ -1,12 +1,13 @@
 package com.mploed.dddwithspring.creditsalesfunnel.model.applicant;
 
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+@Embeddable
 public class Address implements Serializable {
 	private String street;
 	private String postCode;
 	private String city;
-
 
 	public String getStreet() {
 		return street;
@@ -20,15 +21,15 @@ public class Address implements Serializable {
 		return city;
 	}
 
-	public void setStreet(String street) {
+	private void setStreet(String street) {
 		this.street = street;
 	}
 
-	public void setPostCode(String postCode) {
+	private void setPostCode(String postCode) {
 		this.postCode = postCode;
 	}
 
-	public void setCity(String city) {
+	private void setCity(String city) {
 		this.city = city;
 	}
 }

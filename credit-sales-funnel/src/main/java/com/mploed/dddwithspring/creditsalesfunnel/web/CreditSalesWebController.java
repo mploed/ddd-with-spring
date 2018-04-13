@@ -5,13 +5,14 @@ import com.mploed.dddwithspring.creditsalesfunnel.model.applicant.Applicant;
 import com.mploed.dddwithspring.creditsalesfunnel.model.financing.Financing;
 import com.mploed.dddwithspring.creditsalesfunnel.model.household.Household;
 import com.mploed.dddwithspring.creditsalesfunnel.model.realEstate.RealEstateProperty;
+import com.mploed.dddwithspring.creditsalesfunnel.repository.ApplicantRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.UUID;
 
@@ -19,14 +20,28 @@ import java.util.UUID;
 public class CreditSalesWebController {
 	private final Logger LOGGER = LoggerFactory.getLogger(CreditSalesWebController.class);
 
+	private ApplicantRepository applicantRepository;
+
+	@Autowired
+	public CreditSalesWebController(ApplicantRepository applicantRepository) {
+		this.applicantRepository = applicantRepository;
+	}
 
 	@GetMapping(path = "/")
 	public String index() {
 		return "index";
 	}
+
 	@PostMapping(path = "/")
-	public String createApplicationNumber(Model model) {
+	public RedirectView createApplicationNumber() {
 		String applicationNumber = UUID.randomUUID().toString();
+		return new RedirectView("/application/"+applicationNumber);
+	}
+
+
+	@GetMapping(path = "/application/{applicationNumber}")
+	public String applicationOverview(Model model, @PathVariable String applicationNumber) {
+
 		model.addAttribute("applicationNumber", applicationNumber);
 		return "applicationOverview";
 	}
@@ -34,12 +49,18 @@ public class CreditSalesWebController {
 
 	@GetMapping(path = "/application/{applicationNumber}/applicant/{applicantNumber}")
 	public String applicant(Model model, @PathVariable String applicationNumber, @PathVariable String applicantNumber) {
-
-
-		model.addAttribute("applicant", new Applicant(applicationNumber, applicantNumber));
-		model.addAttribute("applicantNumber", applicantNumber);
-		model.addAttribute("applicationNumber", applicationNumber);
+		Applicant applicant = applicantRepository.findByApplicationNumberAndApplicantNumber(applicationNumber, applicantNumber);
+		if (applicant == null) {
+			applicant = new Applicant(applicationNumber, applicantNumber);
+		}
+		model.addAttribute("applicant", applicant);
 		return "applicant";
+	}
+
+	@PostMapping(path = "/application/{applicationNumber}/applicant/{applicantNumber}")
+	public RedirectView saveApplicant(@ModelAttribute Applicant applicant, @PathVariable String applicationNumber, @PathVariable String applicantNumber) {
+		applicantRepository.save(applicant);
+		return new RedirectView("/application/" + applicationNumber);
 	}
 
 	@GetMapping(path = "/application/{applicationNumber}/household")

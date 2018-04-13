@@ -1,23 +1,39 @@
 package com.mploed.dddwithspring.creditsalesfunnel.model.applicant;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+@Entity
 public class Applicant implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE)
+	private Long databaseId;
+
 	private String applicationNumber;
 	private String applicantNumber;
 	private String customerNumber;
 	private String firstName;
 	private String lastName;
 
+	@Embedded
 	private Address address;
+
 	private MartialStatus martialStatus;
 	private Business business;
 	private Employment employment;
 
 	private String employer;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date employedSince;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date birthday;
 
 	public Applicant(String applicationNumber, String applicantNumber) {
@@ -44,6 +60,14 @@ public class Applicant implements Serializable {
 	public int hashCode() {
 
 		return Objects.hash(applicationNumber, applicantNumber);
+	}
+
+	public Long getDatabaseId() {
+		return databaseId;
+	}
+
+	public void setDatabaseId(Long databaseId) {
+		this.databaseId = databaseId;
 	}
 
 	public String getApplicantNumber() {
