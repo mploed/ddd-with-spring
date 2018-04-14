@@ -1,5 +1,18 @@
 package com.mploed.dddwithspring.creditsalesfunnel.model.realEstate;
 
 public enum UsageOfLoan {
-	PURCHASE, CONSTRUCTION, MODERNIZATION, OTHER;
+	PURCHASE("Purchase"),
+	CONSTRUCTION("Construction"),
+	MODERNIZATION("Modernization"),
+	OTHER("Other");
+
+	private final String displayName;
+
+	UsageOfLoan(String displayName) {
+		this.displayName = displayName;
+	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
 }

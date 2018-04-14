@@ -1,5 +1,17 @@
 package com.mploed.dddwithspring.creditsalesfunnel.model.realEstate;
 
 public enum Attic {
-	NOT_PRESENT, PARTLY_DEVELOPED, FULLY_DEVELOPED;
+	NOT_PRESENT("Not present"),
+	PARTLY_DEVELOPED("Partly developed"),
+	FULLY_DEVELOPED("Fully developed");
+
+	private final String displayName;
+
+	Attic(String displayName) {
+		this.displayName = displayName;
+	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
 }

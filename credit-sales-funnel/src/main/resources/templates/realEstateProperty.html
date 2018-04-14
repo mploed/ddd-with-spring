@@ -113,7 +113,7 @@
                         <option value=""></option>
                         <option th:each="typeOfUse : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.realEstate.TypeOfUse).values()}"
                                 th:value="${typeOfUse}"
-                                th:text="${typeOfUse}">
+                                th:text="${typeOfUse.displayName}">
                         </option>
                     </select>
                 </div>
@@ -126,7 +126,7 @@
                         <option value=""></option>
                         <option th:each="objectType : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.realEstate.ObjectType).values()}"
                                 th:value="${objectType}"
-                                th:text="${objectType}">
+                                th:text="${objectType.displayName}">
                         </option>
                     </select>
                 </div>
@@ -139,7 +139,7 @@
                         <option value=""></option>
                         <option th:each="usageOfLoan : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.realEstate.UsageOfLoan).values()}"
                                 th:value="${usageOfLoan}"
-                                th:text="${usageOfLoan}">
+                                th:text="${usageOfLoan.displayName}">
                         </option>
                     </select>
                 </div>
@@ -155,7 +155,7 @@
                         <option value=""></option>
                         <option th:each="interior : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.realEstate.Interior).values()}"
                                 th:value="${interior}"
-                                th:text="${interior}">
+                                th:text="${interior.displayName}">
                         </option>
                     </select>
                 </div>
@@ -168,7 +168,7 @@
                         <option value=""></option>
                         <option th:each="attic : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.realEstate.Attic).values()}"
                                 th:value="${attic}"
-                                th:text="${attic}">
+                                th:text="${attic.displayName}">
                         </option>
                     </select>
                 </div>
@@ -181,7 +181,7 @@
                         <option value=""></option>
                         <option th:each="basement : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.realEstate.Basement).values()}"
                                 th:value="${basement}"
-                                th:text="${basement}">
+                                th:text="${basement.displayName}">
                         </option>
                     </select>
                 </div>
@@ -239,7 +239,7 @@
                         <option value=""></option>
                         <option th:each="apartmentLocation : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.realEstate.ApartmentLocation).values()}"
                                 th:value="${apartmentLocation}"
-                                th:text="${apartmentLocation}">
+                                th:text="${apartmentLocation.displayName}">
                         </option>
                     </select>
                 </div>
