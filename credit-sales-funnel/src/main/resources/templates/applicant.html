@@ -105,7 +105,7 @@
                         <option value=""></option>
                         <option th:each="martialStatus : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.applicant.MartialStatus).values()}"
                                 th:value="${martialStatus}"
-                                th:text="${martialStatus}">
+                                th:text="${martialStatus.displayName}">
                         </option>
                     </select>
                 </div>
@@ -124,9 +124,10 @@
                     <label for="business">Business</label>
 
                     <select id="business" class="form-control"  th:field="*{business}">
+                        <option value=""></option>
                         <option th:each="business : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.applicant.Business).values()}"
                                 th:value="${business}"
-                                th:text="${business}">
+                                th:text="${business.displayName}">
                         </option>
                     </select>
                 </div>
@@ -136,9 +137,10 @@
                     <label for="employment">Employment</label>
 
                     <select id="employment" class="form-control" th:field="*{employment}">
+                        <option value=""></option>
                         <option th:each="employment : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.applicant.Employment).values()}"
                                 th:value="${employment}"
-                                th:text="${employment}">
+                                th:text="${employment.displayName}">
                         </option>
                     </select>
                 </div>
