@@ -53,7 +53,7 @@
         <h2>Financing</h2>
         <div class="form-group">
             <label for="financingNeeds">Financing needs</label>
-            <input class="form-control" id="financingNeeds" type="text" th:field="*{financingNeeds}"/>
+            <input class="form-control" id="financingNeeds" type="number" th:field="*{financingNeeds}"/>
         </div>
         <div class="row">
             <div class="col-md-6"><h2>Own Resources</h2></div>
@@ -64,13 +64,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="liquidAssets">Liquid assets</label>
-                    <input class="form-control" id="liquidAssets" type="text" th:field="*{ownResources.liquidAssets}"/>
+                    <input class="form-control" id="liquidAssets" type="number" th:field="*{ownResources.liquidAssets}"/>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="priceOfLand">Price of land</label>
-                    <input class="form-control" id="priceOfLand" type="text" th:field="*{purchaseCosts.priceOfLand}"/>
+                    <input class="form-control" id="priceOfLand" type="number" th:field="*{purchaseCosts.priceOfLand}"/>
                 </div>
             </div>
         </div>
@@ -79,13 +79,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="balanceFromBuildingSociety">Credit balances from the building society savings</label>
-                    <input class="form-control" id="balanceFromBuildingSociety" type="text" th:field="*{ownResources.balanceFromBuildingSociety}"/>
+                    <input class="form-control" id="balanceFromBuildingSociety" type="number" th:field="*{ownResources.balanceFromBuildingSociety}"/>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="purchasePrice">Purchase price</label>
-                    <input class="form-control" id="purchasePrice" type="text" th:field="*{purchaseCosts.purchasePrice}"/>
+                    <input class="form-control" id="purchasePrice" type="number" th:field="*{purchaseCosts.purchasePrice}"/>
                 </div>
             </div>
         </div>
@@ -94,13 +94,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="ownManpower">Own manpower in construction</label>
-                    <input class="form-control" id="ownManpower" type="text" th:field="*{ownResources.ownManpower}"/>
+                    <input class="form-control" id="ownManpower" type="number" th:field="*{ownResources.ownManpower}"/>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="reconstructionCosts">Reconstruction costs</label>
-                    <input class="form-control" id="reconstructionCosts" type="text" th:field="*{purchaseCosts.reconstructionCosts}"/>
+                    <input class="form-control" id="reconstructionCosts" type="number" th:field="*{purchaseCosts.reconstructionCosts}"/>
                 </div>
             </div>
         </div>
@@ -110,7 +110,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="additionalPurchaseCharges">Additional purchase charges (tax, solicitor)</label>
-                    <input class="form-control" id="additionalPurchaseCharges" type="text" th:field="*{purchaseCosts.additionalPurchaseCharges}"/>
+                    <input class="form-control" id="additionalPurchaseCharges" type="number" th:field="*{purchaseCosts.additionalPurchaseCharges}"/>
                 </div>
             </div>
         </div>
@@ -141,7 +141,7 @@
             <tr th:each="loan, rowStat : *{loans}"	th:class="${rowStat.even ? 'even' : 'odd'}">
                 <input type="hidden" th:field="*{loans[__${rowStat.index}__].databaseId}"/>
                 <th scope="row"><span th:text="${rowStat.index + 1}"/> </th>
-                <td><input class="form-control" type="text" th:field="*{loans[__${rowStat.index}__].loanAmount}" /></td>
+                <td><input class="form-control" type="number" max="2000000" th:field="*{loans[__${rowStat.index}__].loanAmount}" /></td>
                 <td><input class="form-control" readonly type="text" th:field="*{loans[__${rowStat.index}__].interestRate}" /></td>
                 <td>
                     <select class="form-control" th:field="*{loans[__${rowStat.index}__].repaymentInPercent}">
