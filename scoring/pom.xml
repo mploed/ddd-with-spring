@@ -18,7 +18,6 @@
         <module>adapters</module>
         <module>aggregates</module>
 
-        <module>springbootapp</module>
     </modules>
 
 </project>
