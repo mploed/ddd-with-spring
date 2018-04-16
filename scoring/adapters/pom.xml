@@ -26,12 +26,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.mploed.dddwithspring</groupId>
+            <groupId>com.mploed.dddwithspring.scoring</groupId>
             <artifactId>aggregates</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.mploed.dddwithspring</groupId>
+            <groupId>com.mploed.dddwithspring.scoring</groupId>
             <artifactId>sharedmodel</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
