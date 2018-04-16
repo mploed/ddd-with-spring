@@ -9,4 +9,6 @@ public class CreditSalesFunnelApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CreditSalesFunnelApplication.class, args);
 	}
+
+
 }
