@@ -1,0 +1,32 @@
+<jqa:jqassistant-rules xmlns:jqa="http://www.buschmais.com/jqassistant/core/analysis/rules/schema/v1.0">
+
+    <constraint id="my-rules:TestClassName">
+        <requiresConcept refId="junit4:TestClass" />
+        <description>All JUnit test classes must have a name with suffix "Test".</description>
+        <cypher><![CDATA[
+            MATCH
+                (t:Junit4:Test:Class)
+            WHERE NOT
+                t.name =~ ".*Test"
+            RETURN
+                t AS InvalidTestClass
+        ]]></cypher>
+    </constraint>
+    <constraint id="my-rules:AggregateNaming">
+
+        <description>All Classes annotated with @Aggregate must have a name ending with Aggregate</description>
+        <cypher><![CDATA[
+            MATCH (element:Type:Java)
+                -[:ANNOTATED_BY]->(annotation:Java:Annotation)
+                -[:OF_TYPE]->(type:Java {fqn:'com.mploed.dddwithspring.scoring.Aggregate'})
+            WHERE NOT element.name ENDS WITH 'Aggregate'
+            RETURN element.fqn AS InvalidAggregateName
+        ]]></cypher>
+    </constraint>
+
+    <group id="default">
+        <includeConstraint refId="my-rules:TestClassName" />
+        <includeConstraint refId="my-rules:AggregateNaming" />
+    </group>
+
+</jqa:jqassistant-rules>

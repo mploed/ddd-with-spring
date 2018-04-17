@@ -3,7 +3,10 @@ package com.mploed.dddwithspring.scoring.applicant;
 
 import com.mploed.dddwithspring.scoring.ApplicationNumber;
 import com.mploed.dddwithspring.scoring.PersonId;
+import com.mploed.dddwithspring.scoring.microarchitecture.Aggregate;
+import com.mploed.dddwithspring.scoring.microarchitecture.AggregateBuilder;
 
+@Aggregate
 public class ApplicantAggregate {
 	 ApplicantRootEntity applicantRootEntity;
 
@@ -28,6 +31,8 @@ public class ApplicantAggregate {
 	public int calculateScoringPoints() {
 		return applicantRootEntity.calculateScoringPoints();
 	}
+
+	@AggregateBuilder
 	public static class ApplicantAggregateBuilder {
 		private String firstName;
 		private String lastName;

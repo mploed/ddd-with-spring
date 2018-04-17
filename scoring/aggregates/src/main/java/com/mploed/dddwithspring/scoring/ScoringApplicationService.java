@@ -31,7 +31,6 @@ public class ScoringApplicationService {
 		// Perform Scoring on Financial Situation Aggregate
 		int financialSituationPoints = financialSituationAggregate.calculateScoringPoints();
 
-
 		// Perform Scoring on ApplicantAggregate
 		int applicantPoints = applicantAggregate.calculateScoringPoints();
 
@@ -48,6 +47,8 @@ public class ScoringApplicationService {
 				.financialSituationScoring(financialSituationPoints)
 				.noGoCriteria(noGoPresent)
 				.build();
+
+
 
 
 

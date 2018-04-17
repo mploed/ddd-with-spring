@@ -2,7 +2,10 @@ package com.mploed.dddwithspring.scoring.scoringResult;
 
 
 import com.mploed.dddwithspring.scoring.ApplicationNumber;
+import com.mploed.dddwithspring.scoring.microarchitecture.Aggregate;
+import com.mploed.dddwithspring.scoring.microarchitecture.AggregateBuilder;
 
+@Aggregate
 public class ScoringResultAggregate {
 	final ScoringResultRootEntity rootEntity;
 	private ScoringResultAggregate(Builder builder) {
@@ -21,6 +24,7 @@ public class ScoringResultAggregate {
 		return this.rootEntity.overallScoringResult.points;
 	}
 
+	@AggregateBuilder
 	public static class Builder {
 		private final ApplicationNumber applicationNumber;
 		private int applicantScoringResult;

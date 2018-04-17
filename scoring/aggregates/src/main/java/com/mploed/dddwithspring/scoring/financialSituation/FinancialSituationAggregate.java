@@ -1,7 +1,10 @@
 package com.mploed.dddwithspring.scoring.financialSituation;
 
 import com.mploed.dddwithspring.scoring.ApplicationNumber;
+import com.mploed.dddwithspring.scoring.microarchitecture.Aggregate;
+import com.mploed.dddwithspring.scoring.microarchitecture.AggregateBuilder;
 
+@Aggregate
 public class FinancialSituationAggregate {
 	FinancialSituationRootEntity rootEntity;
 
@@ -29,6 +32,8 @@ public class FinancialSituationAggregate {
 			return -20;
 		}
 	}
+
+	@AggregateBuilder
 	public static class FinancialSituationBuilder {
 		private final ApplicationNumber applicationNumber;
 		private int rent;

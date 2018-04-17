@@ -4,10 +4,13 @@ package com.mploed.dddwithspring.scoring.agencyResult;
 
 
 import com.mploed.dddwithspring.scoring.PersonId;
+import com.mploed.dddwithspring.scoring.microarchitecture.Aggregate;
+import com.mploed.dddwithspring.scoring.microarchitecture.AggregateBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Aggregate
 public class AgencyResultAggregate {
 	private AgencyResultRootEntity agencyResultRootEntity;
 
@@ -30,6 +33,7 @@ public class AgencyResultAggregate {
 		return agencyResultRootEntity.calculateScoringPoints();
 	}
 
+	@AggregateBuilder
 	public static class AgencyResultBuilder {
 		private int points;
 		private final Set<KoCriteria> koCriteria;
