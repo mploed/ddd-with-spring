@@ -1,8 +1,12 @@
 package com.mploed.dddwithspring.creditsalesfunnel.model.realEstate;
 
+import com.mploed.dddwithspring.creditsalesfunnel.model.validation.ApplicationSubmissionGroup;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -12,30 +16,62 @@ public class RealEstateProperty implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long databaseId;
+	@NotNull(groups = ApplicationSubmissionGroup.class)
+	@NotEmpty(groups = ApplicationSubmissionGroup.class)
 	private String applicationNumber;
+
+	@NotNull(groups = ApplicationSubmissionGroup.class)
+	@NotEmpty(groups = ApplicationSubmissionGroup.class)
 	private String street;
+
+	@NotNull(groups = ApplicationSubmissionGroup.class)
+	@NotEmpty(groups = ApplicationSubmissionGroup.class)
 	private String houseNumber;
+
+	@NotNull(groups = ApplicationSubmissionGroup.class)
+	@NotEmpty(groups = ApplicationSubmissionGroup.class)
 	private String postCode;
+
+	@NotNull(groups = ApplicationSubmissionGroup.class)
+	@NotEmpty(groups = ApplicationSubmissionGroup.class)
 	private String city;
 	private String yearOfConstruction;
+
 	private int livingSpaceSqm;
 	private int landAreaSqm;
 
+	@NotNull(groups = ApplicationSubmissionGroup.class)
 	private TypeOfUse typeOfUse;
+
+	@NotNull(groups = ApplicationSubmissionGroup.class)
 	private ObjectType objectType;
+
+	@NotNull(groups = ApplicationSubmissionGroup.class)
 	private UsageOfLoan usageOfLoan;
+
+	@NotNull(groups = ApplicationSubmissionGroup.class)
 	private Construction construction;
+
+	@NotNull(groups = ApplicationSubmissionGroup.class)
 	private Interior interior;
 
+	@NotNull(groups = ApplicationSubmissionGroup.class)
 	private Attic attic;
+
+	@NotNull(groups = ApplicationSubmissionGroup.class)
 	private Basement basement;
+
 	@ElementCollection
 	private Set<Feature> features;
+
 	private int numberOfFloors;
+
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date lastModernization;
+
 	@Embedded
+	@Valid
 	private ApartmentInformation apartmentInformation;
 
 	public RealEstateProperty(String applicationNumber) {

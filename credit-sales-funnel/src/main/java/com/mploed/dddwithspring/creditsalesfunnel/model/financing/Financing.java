@@ -1,8 +1,13 @@
 package com.mploed.dddwithspring.creditsalesfunnel.model.financing;
 
+import com.mploed.dddwithspring.creditsalesfunnel.model.validation.ApplicationSubmissionGroup;
 import org.hibernate.annotations.IndexColumn;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +17,22 @@ public class Financing implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long databaseId;
+
+	@NotNull(groups = ApplicationSubmissionGroup.class)
+	@NotEmpty(groups = ApplicationSubmissionGroup.class)
 	private String applicationNumber;
+
+	@Min(1000)
 	private int financingNeeds;
 
 	@Embedded
+	@Valid
+	@NotNull(groups = ApplicationSubmissionGroup.class)
 	private OwnResources ownResources;
+
 	@Embedded
+	@Valid
+	@NotNull(groups = ApplicationSubmissionGroup.class)
 	private PurchaseCosts purchaseCosts;
 
 	@OneToMany(cascade = CascadeType.ALL)

@@ -1,6 +1,9 @@
 package com.mploed.dddwithspring.creditsalesfunnel.model.household;
 
+import com.mploed.dddwithspring.creditsalesfunnel.model.validation.ApplicationSubmissionGroup;
+
 import javax.persistence.Embeddable;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 
 @Embeddable
@@ -9,6 +12,7 @@ public class MonthlyExpenses implements Serializable {
 	private int healthInsuranceSecondApplicant;
 	private int otherLoansRemainderOfDebt;
 	private int otherLoansMonthlyRepayments;
+	@Min(value = 1, groups = ApplicationSubmissionGroup.class)
 	private int costOfLiving;
 	private int rent;
 	private boolean rentNotApplicableInFuture;

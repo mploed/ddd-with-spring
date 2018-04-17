@@ -1,6 +1,12 @@
 package com.mploed.dddwithspring.creditsalesfunnel.model.household;
 
+import com.mploed.dddwithspring.creditsalesfunnel.model.validation.ApplicationSubmissionGroup;
+
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -9,14 +15,29 @@ public class Household implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long databaseId;
+
+	@NotNull(groups = ApplicationSubmissionGroup.class)
+	@NotEmpty(groups = ApplicationSubmissionGroup.class)
 	private String applicationNumber;
+
+	@Min(value = 1, groups = ApplicationSubmissionGroup.class)
 	private int adultsInHousehold;
 	private int childrenInHousehold;
+
+	@NotNull(groups = ApplicationSubmissionGroup.class)
+	@NotEmpty(groups = ApplicationSubmissionGroup.class)
 	private String iban;
+
 	private String bic;
+
 	@Embedded
+	@Valid
+	@NotNull(groups = ApplicationSubmissionGroup.class)
 	private EarningCapacity earningCapacity;
+
 	@Embedded
+	@Valid
+	@NotNull(groups = ApplicationSubmissionGroup.class)
 	private MonthlyExpenses monthlyExpenses;
 
 

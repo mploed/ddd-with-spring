@@ -5,6 +5,7 @@ import com.mploed.dddwithspring.creditsalesfunnel.model.applicant.Applicant;
 import com.mploed.dddwithspring.creditsalesfunnel.model.financing.Financing;
 import com.mploed.dddwithspring.creditsalesfunnel.model.household.Household;
 import com.mploed.dddwithspring.creditsalesfunnel.model.realEstate.RealEstateProperty;
+import com.mploed.dddwithspring.creditsalesfunnel.model.validation.ApplicationSubmissionGroup;
 import com.mploed.dddwithspring.creditsalesfunnel.repository.ApplicantRepository;
 import com.mploed.dddwithspring.creditsalesfunnel.repository.FinancingRepository;
 import com.mploed.dddwithspring.creditsalesfunnel.repository.HouseholdRepository;
@@ -17,6 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.util.Set;
 import java.util.UUID;
 
 @Controller
@@ -31,13 +35,18 @@ public class CreditSalesWebController {
 
 	private RealEstatePropertyRepository realEstatePropertyRepository;
 
+	private Validator validator;
+
 	@Autowired
-	public CreditSalesWebController(ApplicantRepository applicantRepository, FinancingRepository financingRepository, HouseholdRepository householdRepository, RealEstatePropertyRepository realEstatePropertyRepository) {
+	public CreditSalesWebController(ApplicantRepository applicantRepository, FinancingRepository financingRepository, HouseholdRepository householdRepository, RealEstatePropertyRepository realEstatePropertyRepository, Validator validator) {
 		this.applicantRepository = applicantRepository;
 		this.financingRepository = financingRepository;
 		this.householdRepository = householdRepository;
 		this.realEstatePropertyRepository = realEstatePropertyRepository;
+		this.validator = validator;
 	}
+
+
 
 	@GetMapping(path = "/")
 	public String index() {
@@ -53,6 +62,52 @@ public class CreditSalesWebController {
 
 	@GetMapping(path = "/application/{applicationNumber}")
 	public String applicationOverview(Model model, @PathVariable String applicationNumber) {
+
+		Applicant firstApplicant = applicantRepository.findByApplicationNumberAndApplicantNumber(applicationNumber, "1");
+		boolean firstApplicantValid = false;
+		if(firstApplicant != null) {
+			Set<ConstraintViolation<Applicant>> constraintViolations = validator.validate(firstApplicant, ApplicationSubmissionGroup.class);
+			firstApplicantValid = constraintViolations.isEmpty();
+		}
+
+		Applicant secondApplicant = applicantRepository.findByApplicationNumberAndApplicantNumber(applicationNumber, "2");
+		boolean secondApplicantValid = false;
+		if(secondApplicant != null) {
+			Set<ConstraintViolation<Applicant>> constraintViolations = validator.validate(secondApplicant, ApplicationSubmissionGroup.class);
+			secondApplicantValid = constraintViolations.isEmpty();
+		}
+
+		Household household = householdRepository.findByApplicationNumber(applicationNumber);
+		boolean householdValid = false;
+		if(household != null) {
+			Set<ConstraintViolation<Household>> constraintViolations = validator.validate(household, ApplicationSubmissionGroup.class);
+			householdValid = constraintViolations.isEmpty();
+		}
+
+		Financing financing = financingRepository.findByApplicationNumber(applicationNumber);
+		boolean financingValid = false;
+		if(financing != null) {
+			Set<ConstraintViolation<Financing>> constraintViolations = validator.validate(financing, ApplicationSubmissionGroup.class);
+			financingValid = constraintViolations.isEmpty();
+		}
+
+		RealEstateProperty realEstateProperty = realEstatePropertyRepository.findByApplicationNumber(applicationNumber);
+		boolean realEstatePropertyValid = false;
+		if(realEstateProperty != null) {
+			Set<ConstraintViolation<RealEstateProperty>> constraintViolations = validator.validate(realEstateProperty, ApplicationSubmissionGroup.class);
+			realEstatePropertyValid = constraintViolations.isEmpty();
+		}
+
+		model.addAttribute("firstApplicant", firstApplicant);
+		model.addAttribute("secondApplicant", secondApplicant);
+		model.addAttribute("financing", financing);
+		model.addAttribute("household", household);
+		model.addAttribute("realEstateProperty", realEstateProperty);
+		model.addAttribute("firstApplicantValid", firstApplicantValid );
+		model.addAttribute("secondApplicantValid", secondApplicantValid );
+		model.addAttribute("financingValid", financingValid );
+		model.addAttribute("householdValid", householdValid );
+		model.addAttribute("realEstatePropertyValid", realEstatePropertyValid );
 
 		model.addAttribute("applicationNumber", applicationNumber);
 		return "applicationOverview";

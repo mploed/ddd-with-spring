@@ -144,13 +144,26 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
-                        <label for="lastModernization">Date of last modernization (Format: dd.mm.yyyy)</label>
+                        <label for="construction">Construction</label>
+
+                        <select id="construction" class="form-control" th:field="*{construction}">
+                            <option value=""></option>
+                            <option th:each="construction : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.realEstate.Construction).values()}"
+                                    th:value="${construction}"
+                                    th:text="${construction.displayName}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="lastModernization">Date of last modernization</label>
                         <input class="form-control" id="lastModernization" type="date" th:field="*{lastModernization}"/>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label for="numberOfFloors">Number of floors</label>
                         <input class="form-control" id="numberOfFloors" type="number" th:field="*{numberOfFloors}"/>
