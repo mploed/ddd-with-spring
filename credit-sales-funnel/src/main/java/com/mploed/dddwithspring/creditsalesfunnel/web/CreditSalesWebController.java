@@ -64,40 +64,22 @@ public class CreditSalesWebController {
 	public String applicationOverview(Model model, @PathVariable String applicationNumber) {
 
 		Applicant firstApplicant = applicantRepository.findByApplicationNumberAndApplicantNumber(applicationNumber, "1");
-		boolean firstApplicantValid = false;
-		if(firstApplicant != null) {
-			Set<ConstraintViolation<Applicant>> constraintViolations = validator.validate(firstApplicant, ApplicationSubmissionGroup.class);
-			firstApplicantValid = constraintViolations.isEmpty();
-		}
+		boolean firstApplicantValid = isValid(firstApplicant);
 
 		Applicant secondApplicant = applicantRepository.findByApplicationNumberAndApplicantNumber(applicationNumber, "2");
-		boolean secondApplicantValid = false;
-		if(secondApplicant != null) {
-			Set<ConstraintViolation<Applicant>> constraintViolations = validator.validate(secondApplicant, ApplicationSubmissionGroup.class);
-			secondApplicantValid = constraintViolations.isEmpty();
-		}
+		boolean secondApplicantValid = isValid(secondApplicant);
 
 		Household household = householdRepository.findByApplicationNumber(applicationNumber);
-		boolean householdValid = false;
-		if(household != null) {
-			Set<ConstraintViolation<Household>> constraintViolations = validator.validate(household, ApplicationSubmissionGroup.class);
-			householdValid = constraintViolations.isEmpty();
-		}
+		boolean householdValid = isValid(household);
 
 		Financing financing = financingRepository.findByApplicationNumber(applicationNumber);
-		boolean financingValid = false;
-		if(financing != null) {
-			Set<ConstraintViolation<Financing>> constraintViolations = validator.validate(financing, ApplicationSubmissionGroup.class);
-			financingValid = constraintViolations.isEmpty();
-		}
+		boolean financingValid = isValid(financing);
 
 		RealEstateProperty realEstateProperty = realEstatePropertyRepository.findByApplicationNumber(applicationNumber);
-		boolean realEstatePropertyValid = false;
-		if(realEstateProperty != null) {
-			Set<ConstraintViolation<RealEstateProperty>> constraintViolations = validator.validate(realEstateProperty, ApplicationSubmissionGroup.class);
-			realEstatePropertyValid = constraintViolations.isEmpty();
-		}
+		boolean realEstatePropertyValid = isValid(realEstateProperty);
 
+
+		boolean readyForSubmission = isApplicationReadyForSubmission(firstApplicantValid, secondApplicant, secondApplicantValid, householdValid, financingValid, realEstatePropertyValid);
 		model.addAttribute("firstApplicant", firstApplicant);
 		model.addAttribute("secondApplicant", secondApplicant);
 		model.addAttribute("financing", financing);
@@ -109,6 +91,7 @@ public class CreditSalesWebController {
 		model.addAttribute("householdValid", householdValid );
 		model.addAttribute("realEstatePropertyValid", realEstatePropertyValid );
 
+		model.addAttribute("readForSubmission", readyForSubmission);
 		model.addAttribute("applicationNumber", applicationNumber);
 		return "applicationOverview";
 	}
@@ -175,6 +158,32 @@ public class CreditSalesWebController {
 	public RedirectView saveFinancing(@ModelAttribute Financing financing, @PathVariable String applicationNumber) {
 		financingRepository.save(financing);
 		return new RedirectView("/application/" + applicationNumber);
+	}
+
+	private boolean isValid(Object entity) {
+		boolean entityValid = false;
+		if(entity != null) {
+			Set constraintViolations = validator.validate(entity, ApplicationSubmissionGroup.class);
+			entityValid = constraintViolations.isEmpty();
+		}
+		return entityValid;
+	}
+
+	private boolean isApplicationReadyForSubmission(boolean firstApplicantValid, Applicant secondApplicant, boolean secondApplicantValid, boolean householdValid, boolean financingValid, boolean realEstatePropertyValid) {
+		boolean readyForSubmission = false;
+		if(secondApplicant != null ) {
+			readyForSubmission = firstApplicantValid &&
+					secondApplicantValid &&
+					financingValid &&
+					realEstatePropertyValid &&
+					householdValid;
+		} else {
+			readyForSubmission = firstApplicantValid &&
+					financingValid &&
+					realEstatePropertyValid &&
+					householdValid;
+		}
+		return readyForSubmission;
 	}
 
 }

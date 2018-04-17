@@ -4,7 +4,14 @@
 <th:block layout:fragment="content">
 
     <div class="container theme-showcase" role="main">
+        <form th:if="${readForSubmission}" th:action="@{/application/__${applicationNumber}__}" method="PUT">
+            <br/>
 
+            <button type="submit" class="btn btn-success">Submit Application Form</button>
+
+
+        </form>
+        <br/>
         <table class="table">
             <thead class="thead-light">
             <tr>
@@ -68,7 +75,8 @@
             </tr>
             <tr>
                 <td>
-                    <a class="btn btn-outline-secondary" th:href="@{'/application/' + ${applicationNumber}+'/realEstateProperty'}"
+                    <a class="btn btn-outline-secondary"
+                       th:href="@{'/application/' + ${applicationNumber}+'/realEstateProperty'}"
                        role="button">
                         Real Estate Property
                     </a>
@@ -84,7 +92,8 @@
             </tr>
             <tr>
                 <td>
-                    <a class="btn btn-outline-secondary" th:href="@{'/application/' + ${applicationNumber}+'/financing'}" role="button">Financing</a><br/>
+                    <a class="btn btn-outline-secondary"
+                       th:href="@{'/application/' + ${applicationNumber}+'/financing'}" role="button">Financing</a><br/>
                 </td>
                 <td>
                     <span th:if="${financing !=null}">yes</span>
@@ -99,17 +108,7 @@
 
             <tfoot></tfoot>
         </table>
-        <table>
-
-        </table>
         <br/>
-
-
-
-
-
-
-
     </div>
 </th:block>
 </body>
