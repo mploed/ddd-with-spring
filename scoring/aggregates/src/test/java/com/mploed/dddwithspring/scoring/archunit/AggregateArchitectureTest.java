@@ -36,7 +36,7 @@ public class AggregateArchitectureTest {
 
 	@Test
 	public void aggregateAnnotationRules() {
-		ClassesShouldConjunction namingToAnnotation = classes().that().haveNameMatching(".*Aggregagte").should().beAnnotatedWith(Aggregate.class);
+		ClassesShouldConjunction namingToAnnotation = classes().that().haveNameMatching(".*Aggregate").should().beAnnotatedWith(Aggregate.class);
 		namingToAnnotation.check(this.classes);
 
 		ClassesShouldConjunction annotationToNaming = classes().that().areAnnotatedWith(Aggregate.class).should().haveNameMatching(".*Aggregate");
