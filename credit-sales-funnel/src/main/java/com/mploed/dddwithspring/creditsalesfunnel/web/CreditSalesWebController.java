@@ -1,5 +1,7 @@
 package com.mploed.dddwithspring.creditsalesfunnel.web;
 
+import com.mploed.dddwithspring.creditsalesfunnel.event.CreditApplicationSubmittedEvent;
+import com.mploed.dddwithspring.creditsalesfunnel.event.CreditSalesFunnelChannels;
 import com.mploed.dddwithspring.creditsalesfunnel.model.CreditApplicationForm;
 import com.mploed.dddwithspring.creditsalesfunnel.model.applicant.Applicant;
 import com.mploed.dddwithspring.creditsalesfunnel.model.financing.Financing;
@@ -13,6 +15,7 @@ import com.mploed.dddwithspring.creditsalesfunnel.repository.RealEstatePropertyR
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,18 +38,19 @@ public class CreditSalesWebController {
 
 	private RealEstatePropertyRepository realEstatePropertyRepository;
 
+	private CreditSalesFunnelChannels creditSalesFunnelChannels;
+
 	private Validator validator;
 
 	@Autowired
-	public CreditSalesWebController(ApplicantRepository applicantRepository, FinancingRepository financingRepository, HouseholdRepository householdRepository, RealEstatePropertyRepository realEstatePropertyRepository, Validator validator) {
+	public CreditSalesWebController(ApplicantRepository applicantRepository, FinancingRepository financingRepository, HouseholdRepository householdRepository, RealEstatePropertyRepository realEstatePropertyRepository, CreditSalesFunnelChannels creditSalesFunnelChannels, Validator validator) {
 		this.applicantRepository = applicantRepository;
 		this.financingRepository = financingRepository;
 		this.householdRepository = householdRepository;
 		this.realEstatePropertyRepository = realEstatePropertyRepository;
+		this.creditSalesFunnelChannels = creditSalesFunnelChannels;
 		this.validator = validator;
 	}
-
-
 
 	@GetMapping(path = "/")
 	public String index() {
@@ -59,6 +63,42 @@ public class CreditSalesWebController {
 		return new RedirectView("/application/"+applicationNumber);
 	}
 
+	@PostMapping(path = "/application/{applicationNumber}")
+	public String submitApplication(@PathVariable String applicationNumber) {
+		Applicant firstApplicant = applicantRepository.findByApplicationNumberAndApplicantNumber(applicationNumber, "1");
+		boolean firstApplicantValid = isValid(firstApplicant);
+
+		boolean secondApplicantValid = true;
+		Applicant secondApplicant = applicantRepository.findByApplicationNumberAndApplicantNumber(applicationNumber, "2");
+		if(secondApplicant != null) {
+			secondApplicantValid = isValid(secondApplicant);
+
+		}
+
+		Household household = householdRepository.findByApplicationNumber(applicationNumber);
+		boolean householdValid = isValid(household);
+
+		Financing financing = financingRepository.findByApplicationNumber(applicationNumber);
+		boolean financingValid = isValid(financing);
+
+		RealEstateProperty realEstateProperty = realEstatePropertyRepository.findByApplicationNumber(applicationNumber);
+		boolean realEstatePropertyValid = isValid(realEstateProperty);
+
+		boolean applicationValid = firstApplicantValid && secondApplicantValid && householdValid && financingValid && realEstatePropertyValid;
+		if(applicationValid) {
+			CreditApplicationSubmittedEvent event = new CreditApplicationSubmittedEvent();
+			event.setApplicationNumber(applicationNumber);
+			event.setFirstApplicant(firstApplicant);
+			event.setSecondApplicant(secondApplicant);
+			event.setFinancing(financing);
+			event.setHousehold(household);
+			event.setRealEstateProperty(realEstateProperty);
+
+			creditSalesFunnelChannels.creditApplicationSubmittedOut().send(MessageBuilder.withPayload(event).build());
+		}
+
+		return "redirect:/";
+	}
 
 	@GetMapping(path = "/application/{applicationNumber}")
 	public String applicationOverview(Model model, @PathVariable String applicationNumber) {

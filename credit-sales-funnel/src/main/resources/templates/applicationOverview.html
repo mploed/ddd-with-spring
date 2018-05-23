@@ -4,7 +4,7 @@
 <th:block layout:fragment="content">
 
     <div class="container theme-showcase" role="main">
-        <form th:if="${readForSubmission}" th:action="@{/application/__${applicationNumber}__}" method="PUT">
+        <form th:if="${readForSubmission}" th:action="@{/application/__${applicationNumber}__}" method="POST">
             <br/>
 
             <button type="submit" class="btn btn-success">Submit Application Form</button>

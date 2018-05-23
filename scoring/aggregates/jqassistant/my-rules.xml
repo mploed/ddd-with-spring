@@ -23,10 +23,22 @@
             RETURN element.fqn AS InvalidAggregateName
         ]]></cypher>
     </constraint>
+    <constraint id="my-rules:AggregateBuilderNaming">
+
+        <description>All Classes annotated with @AggregateBuilder must be called Builder</description>
+        <cypher><![CDATA[
+            MATCH (element:Type:Java)
+                -[:ANNOTATED_BY]->(annotation:Java:Annotation)
+                -[:OF_TYPE]->(type:Java {fqn:'com.mploed.dddwithspring.scoring.microarchitecture.AggregateBuilder'})
+            WHERE NOT element.name ENDS WITH '$Builder'
+            RETURN element.fqn AS InvalidBuilderName
+        ]]></cypher>
+    </constraint>
 
     <group id="default">
         <includeConstraint refId="my-rules:TestClassName" />
         <includeConstraint refId="my-rules:AggregateNaming" />
+        <includeConstraint refId="my-rules:AggregateBuilderNaming" />
     </group>
 
 </jqa:jqassistant-rules>

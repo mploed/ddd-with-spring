@@ -18,6 +18,7 @@
         <module>sharedmodel</module>
         <module>adapters</module>
         <module>aggregates</module>
+        <module>scoring-application</module>
     </modules>
 
 </project>

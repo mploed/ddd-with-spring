@@ -3,8 +3,11 @@ package com.mploed.dddwithspring.scoring.scoringResult;
 import com.mploed.dddwithspring.scoring.ApplicationNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class ScoringResultJPARepository implements ScoringResultRepository {
 	private ScoringResultDAO scoringResultDAO;
 

@@ -6,5 +6,5 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableBinding(ApplicationProcessChannels.class)
-public class MessagingConfiguration {
+public class    MessagingConfiguration {
 }

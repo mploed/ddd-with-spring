@@ -78,6 +78,9 @@ public class ApplicantAggregate {
 		}
 
 		public ApplicantAggregate build() {
+			if(this.accountBalance == null) {
+				this.accountBalance = new AccountBalance(0);
+			}
 			return new ApplicantAggregate(this);
 		}
 	}

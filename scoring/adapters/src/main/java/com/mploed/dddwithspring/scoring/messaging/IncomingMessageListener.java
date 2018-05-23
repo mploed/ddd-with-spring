@@ -2,9 +2,7 @@ package com.mploed.dddwithspring.scoring.messaging;
 
 import com.mploed.dddwithspring.scoring.ScoringApplicationService;
 import com.mploed.dddwithspring.scoring.events.incoming.AgencyResultArrivedEvent;
-import com.mploed.dddwithspring.scoring.events.incoming.ApplicantAddedEvent;
 import com.mploed.dddwithspring.scoring.events.incoming.ApplicationSubmittedEvent;
-import com.mploed.dddwithspring.scoring.events.incoming.FinancialSituationEnteredEvent;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
@@ -22,20 +20,10 @@ public class IncomingMessageListener {
 		scoringApplicationService.scoreAgencyResult(agencyResultArrivedEvent);
 	}
 
-	@StreamListener(ApplicationProcessChannels.APPLICANT_ADDED)
-	public void receiveApplicant(@Payload ApplicantAddedEvent applicantAddedEvent) {
-		scoringApplicationService.scoreApplicant(applicantAddedEvent);
-	}
-
-	@StreamListener(ApplicationProcessChannels.FINANCIAL_SITUATION_ENTERED)
-	public void receiveFinancialSituation(@Payload FinancialSituationEnteredEvent financialSituationEnteredEvent) {
-		scoringApplicationService.scoreFinancialSituation(financialSituationEnteredEvent);
-
-	}
 
 	@StreamListener(ApplicationProcessChannels.APPLICATION_SUBMITTED)
 	public void receiveApplicationSubmission(@Payload ApplicationSubmittedEvent applicationSubmittedEvent) {
-		scoringApplicationService.performFinalScoring(applicationSubmittedEvent);
+		scoringApplicationService.scoreApplication(applicationSubmittedEvent);
 
 	}
 

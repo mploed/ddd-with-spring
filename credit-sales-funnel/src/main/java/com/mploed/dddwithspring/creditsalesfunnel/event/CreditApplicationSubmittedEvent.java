@@ -1,13 +1,14 @@
-package com.mploed.dddwithspring.scoring.events.incoming;
+package com.mploed.dddwithspring.creditsalesfunnel.event;
 
-import com.mploed.dddwithspring.scoring.events.incoming.applicant.Applicant;
-import com.mploed.dddwithspring.scoring.events.incoming.financing.Financing;
-import com.mploed.dddwithspring.scoring.events.incoming.household.Household;
-import com.mploed.dddwithspring.scoring.events.incoming.realEstate.RealEstateProperty;
+import com.mploed.dddwithspring.creditsalesfunnel.model.applicant.Applicant;
+import com.mploed.dddwithspring.creditsalesfunnel.model.financing.Financing;
+import com.mploed.dddwithspring.creditsalesfunnel.model.household.Household;
+import com.mploed.dddwithspring.creditsalesfunnel.model.realEstate.RealEstateProperty;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ApplicationSubmittedEvent {
+public class CreditApplicationSubmittedEvent implements Serializable {
 	private String applicationNumber;
 	private Date timestamp;
 	private Applicant firstApplicant;
@@ -16,7 +17,9 @@ public class ApplicationSubmittedEvent {
 	private RealEstateProperty realEstateProperty;
 	private Financing financing;
 
-	public ApplicationSubmittedEvent() {
+
+	public CreditApplicationSubmittedEvent() {
+		this.timestamp = new Date();
 	}
 
 	public String getApplicationNumber() {

@@ -3,8 +3,11 @@ package com.mploed.dddwithspring.scoring.agencyResult;
 import com.mploed.dddwithspring.scoring.PersonId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class AgencyResultJPARepository implements AgencyResultRepository {
 
 	private AgencyResultDAO dao;
