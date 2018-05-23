@@ -9,6 +9,7 @@
     <modules>
         <module>credit-sales-funnel</module>
         <module>scoring</module>
+        <module>credit-agency</module>
     </modules>
     <packaging>pom</packaging>
 
