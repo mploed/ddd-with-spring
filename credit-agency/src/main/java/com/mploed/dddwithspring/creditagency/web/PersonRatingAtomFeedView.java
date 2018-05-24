@@ -1,5 +1,6 @@
 package com.mploed.dddwithspring.creditagency.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mploed.dddwithspring.creditagency.model.PersonRating;
 import com.mploed.dddwithspring.creditagency.repository.PersonRatingRepository;
 import com.rometools.rome.feed.atom.*;
@@ -53,20 +54,23 @@ public class PersonRatingAtomFeedView extends AbstractAtomFeedView {
 	                                       HttpServletResponse response) throws Exception {
 
 		List<Entry> entries = new ArrayList<Entry>();
+		ObjectMapper mapper = new ObjectMapper();
 
-		for (PersonRating o : personRatingRepository.findAll(new Sort(Sort.Direction.DESC, "lastUpdated"))) {
+		for (PersonRating personRating : personRatingRepository.findAll(new Sort(Sort.Direction.DESC, "lastUpdated"))) {
 			Entry entry = new Entry();
-			entry.setId("https://github.com/mploed/ddd-with-spring/person-rating/" + o.getId());
-			entry.setUpdated(o.getLastUpdated());
-			entry.setTitle("Person Rating " + o.getId());
+			entry.setId("https://github.com/mploed/ddd-with-spring/person-rating/" + personRating.getId());
+			entry.setUpdated(personRating.getLastUpdated());
+			entry.setTitle("Person Rating " + personRating.getId());
+
 			List<Content> contents = new ArrayList<Content>();
 			Content content = new Content();
-			content.setSrc(baseUrl(request) + "rating/rest/" + o.getId());
+			content.setSrc(baseUrl(request) + "rating/rest/" + personRating.getId());
 			content.setType("application/json");
+
 			contents.add(content);
 			entry.setContents(contents);
 			Content summary = new Content();
-			summary.setValue(""+o.getPoints());
+			summary.setValue(mapper.writeValueAsString(personRating));
 			entry.setSummary(summary);
 			entries.add(entry);
 		}

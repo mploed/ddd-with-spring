@@ -16,8 +16,11 @@
     <modules>
         <module>microarchitecture</module>
         <module>sharedmodel</module>
-        <module>adapters</module>
         <module>aggregates</module>
+
+        <module>adapters-input</module>
+        <module>adpaters-output</module>
+        <module>application-services</module>
         <module>scoring-application</module>
     </modules>
 
