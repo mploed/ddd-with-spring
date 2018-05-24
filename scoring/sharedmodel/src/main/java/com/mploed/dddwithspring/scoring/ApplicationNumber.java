@@ -9,8 +9,6 @@ public class ApplicationNumber {
 
 	@Override
 	public String toString() {
-		return "ApplicationNumber{" +
-				"applicatioNumber='" + applicatioNumber + '\'' +
-				'}';
+		return applicatioNumber;
 	}
 }

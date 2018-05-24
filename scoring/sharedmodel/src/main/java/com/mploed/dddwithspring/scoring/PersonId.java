@@ -9,6 +9,12 @@ public class PersonId {
 	public PersonId(String personId) {
 		this.personId = personId;
 	}
+
+	@Override
+	public String toString() {
+		return personId;
+	}
+
 	private PersonId(PersonIdBuilder builder) {
 		try {
 			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");

@@ -1,6 +1,7 @@
 package com.mploed.dddwithspring.scoring.applicant;
 
 import com.mploed.dddwithspring.scoring.ApplicationNumber;
+import com.mploed.dddwithspring.scoring.PersonId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -32,4 +33,8 @@ public class ApplicantResultJPARepository implements ApplicantResultRepository {
 		return dao.findByApplicationNumber(applicationNumber.toString());
 	}
 
+	@Override
+	public ApplicantResultProjection retrieve(PersonId personId) {
+		return dao.findByPersonId(personId.toString());
+	}
 }

@@ -10,4 +10,6 @@ public interface ApplicantResultRepository {
 	void save(ApplicantAggregate applicantAggregate);
 
 	ApplicantResultProjection retrieve(ApplicationNumber applicationNumber);
+
+	ApplicantResultProjection retrieve(PersonId personId);
 }

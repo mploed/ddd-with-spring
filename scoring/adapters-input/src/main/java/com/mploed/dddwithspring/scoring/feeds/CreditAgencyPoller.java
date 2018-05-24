@@ -40,10 +40,9 @@ public class CreditAgencyPoller {
 
 	}
 
-	@Scheduled(fixedDelay = 20000)
+	@Scheduled(fixedDelay = 30000)
 	public void poll() {
 
-		System.out.println("polling");
 		HttpHeaders requestHeaders = new HttpHeaders();
 		if (lastModified != null) {
 			requestHeaders.set("If-Modified-Since", DateUtils.formatDate(lastModified));

@@ -25,6 +25,9 @@ public class AgencyResultAggregate {
 	}
 
 
+	public PersonId getPersonId() {
+		return agencyResultRootEntity.id;
+	}
 	public boolean isAcceptable() {
 		return agencyResultRootEntity.isAcceptable();
 	}
