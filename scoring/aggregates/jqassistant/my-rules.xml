@@ -18,7 +18,7 @@
         <cypher><![CDATA[
             MATCH (element:Type:Java)
                 -[:ANNOTATED_BY]->(annotation:Java:Annotation)
-                -[:OF_TYPE]->(type:Java {fqn:'com.mploed.dddwithspring.scoring.Aggregate'})
+                -[:OF_TYPE]->(type:Java {fqn:'com.mploed.dddwithspring.scoring.microarchitecture.Aggregate'})
             WHERE NOT element.name ENDS WITH 'Aggregate'
             RETURN element.fqn AS InvalidAggregateName
         ]]></cypher>
@@ -30,7 +30,7 @@
             MATCH (element:Type:Java)
                 -[:ANNOTATED_BY]->(annotation:Java:Annotation)
                 -[:OF_TYPE]->(type:Java {fqn:'com.mploed.dddwithspring.scoring.microarchitecture.AggregateBuilder'})
-            WHERE NOT element.name ENDS WITH '$Builder'
+            WHERE NOT element.name ENDS WITH 'Builder'
             RETURN element.fqn AS InvalidBuilderName
         ]]></cypher>
     </constraint>
