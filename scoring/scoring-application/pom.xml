@@ -12,6 +12,7 @@
 
     <groupId>com.mploed.dddwithspring.scoring</groupId>
     <artifactId>scoring-application</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
 
 
     <properties>
