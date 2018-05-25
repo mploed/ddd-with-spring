@@ -1,0 +1,70 @@
+version: '3'
+services:
+    ddd-rabbit-mq:
+        container_name: ddd-rabbit-mq
+        image: rabbitmq:3
+        expose:
+            - 5672
+        networks:
+            - ddd-with-spring-network
+        logging:
+            driver: json-file
+    credit-agency:
+        container_name: ddd-with-spring-creditagency
+        build:
+            context: credit-agency
+            dockerfile: Dockerfile
+        image: ddd-with-spring-creditagency:latest
+        expose:
+            - 9002
+        ports:
+            - "9002:9002"
+        networks:
+            - ddd-with-spring-network
+        depends_on:
+            - ddd-rabbit-mq
+        links:
+            - ddd-rabbit-mq:rabbit-mq
+        logging:
+            driver: json-file
+    scoring:
+        container_name: ddd-with-spring-scoring
+        build:
+            context: scoring
+            dockerfile: Dockerfile
+        image: ddd-with-spring-scoring:latest
+        expose:
+            - 9001
+        ports:
+            - "9001:9001"
+        networks:
+            - ddd-with-spring-network
+        depends_on:
+            - ddd-rabbit-mq
+            - credit-agency
+        links:
+            - ddd-rabbit-mq:rabbit-mq
+            - credit-agency:credit-agency
+        logging:
+            driver: json-file
+    credit-sales-funnel:
+        container_name: ddd-with-spring-creditsalesfunnel
+        build:
+            context: credit-sales-funnel
+            dockerfile: Dockerfile
+        image: ddd-with-spring-creditsalesfunnel:latest
+        expose:
+            - 9000
+        ports:
+            - "9000:9000"
+        networks:
+            - ddd-with-spring-network
+        depends_on:
+            - ddd-rabbit-mq
+        links:
+            - ddd-rabbit-mq:rabbit-mq
+        logging:
+            driver: json-file
+networks:
+    ddd-with-spring-network:
+        driver: bridge
