@@ -26,3 +26,13 @@ The project uses the following Spring technologies:
 - Spring Boot
 - Spring Cloud Stream 
 - Spring Data JPA
+
+## Prerequisites and getting started
+
+In order to run the application you need to have Docker and docker-compose installed on your machine.
+
+When you have docker up and running you need to perform the following steps on the command line:
+
+1. ./mvnw clean package
+2. docker-compose up --build
+3. After everything has started you can open http://localhost:9000 in a browser of your choice
