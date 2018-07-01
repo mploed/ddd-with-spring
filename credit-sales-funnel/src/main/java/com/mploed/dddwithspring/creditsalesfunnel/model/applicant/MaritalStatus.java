@@ -1,6 +1,6 @@
 package com.mploed.dddwithspring.creditsalesfunnel.model.applicant;
 
-public enum MartialStatus {
+public enum MaritalStatus {
 	SINGLE("Single"),
 	MARRIED("Married"),
 	DIVORCED("Divorced"),
@@ -8,7 +8,7 @@ public enum MartialStatus {
 
 	private final String displayName;
 
-	MartialStatus(String displayName) {
+	MaritalStatus(String displayName) {
 		this.displayName = displayName;
 	}
 
