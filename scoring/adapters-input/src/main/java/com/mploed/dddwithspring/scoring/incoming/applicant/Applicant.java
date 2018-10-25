@@ -19,7 +19,7 @@ public class Applicant implements Serializable {
 
 	private Address address;
 
-	private MartialStatus martialStatus;
+	private MaritalStatus maritalStatus;
 
 	private Business business;
 
@@ -112,12 +112,12 @@ public class Applicant implements Serializable {
 		this.address = address;
 	}
 
-	public MartialStatus getMartialStatus() {
-		return martialStatus;
+	public MaritalStatus getMaritalStatus() {
+		return maritalStatus;
 	}
 
-	public void setMartialStatus(MartialStatus martialStatus) {
-		this.martialStatus = martialStatus;
+	public void setMaritalStatus(MaritalStatus maritalStatus) {
+		this.maritalStatus = maritalStatus;
 	}
 
 	public Business getBusiness() {
