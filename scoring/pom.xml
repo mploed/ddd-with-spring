@@ -20,7 +20,6 @@
 
         <module>adapters-input</module>
         <module>adpaters-output</module>
-        <module>application-services</module>
         <module>scoring-application</module>
     </modules>
 
