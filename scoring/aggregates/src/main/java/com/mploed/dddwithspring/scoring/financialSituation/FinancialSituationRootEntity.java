@@ -2,6 +2,7 @@ package com.mploed.dddwithspring.scoring.financialSituation;
 
 
 import com.mploed.dddwithspring.scoring.ApplicationNumber;
+import com.mploed.dddwithspring.scoring.Money;
 
 class FinancialSituationRootEntity {
 	final ApplicationNumber applicationNumber;
@@ -15,8 +16,8 @@ class FinancialSituationRootEntity {
 		this.outgoings = outgoings;
 	}
 
-	int sum() {
-		return incomings.sum() - outgoings.sum();
+	Money sum() {
+		return incomings.sum().add(outgoings.sum());
 	}
 
 }

@@ -1,15 +1,17 @@
 package com.mploed.dddwithspring.scoring.financialSituation;
 
-class Outgoings {
-	private int rent;
-	private int costOfLiving;
+import com.mploed.dddwithspring.scoring.Money;
 
-	Outgoings(int rent, int costOfLiving) {
+class Outgoings {
+	private Money rent;
+	private Money costOfLiving;
+
+	Outgoings(Money rent, Money costOfLiving) {
 		this.rent = rent;
 		this.costOfLiving = costOfLiving;
 	}
 
-	int sum() {
-		return rent + costOfLiving;
+	Money sum() {
+		return rent.add(costOfLiving);
 	}
 }
