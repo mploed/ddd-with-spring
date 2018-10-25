@@ -1,7 +1,6 @@
 package com.mploed.dddwithspring.scoring.events;
 
 import com.mploed.dddwithspring.scoring.PersonId;
-import com.rometools.rome.feed.atom.Person;
 import org.springframework.context.ApplicationEvent;
 
 public class ScoringPerformed extends ApplicationEvent {

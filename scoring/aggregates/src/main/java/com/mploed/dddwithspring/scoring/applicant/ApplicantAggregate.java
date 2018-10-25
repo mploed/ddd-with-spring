@@ -2,6 +2,7 @@ package com.mploed.dddwithspring.scoring.applicant;
 
 
 import com.mploed.dddwithspring.scoring.ApplicationNumber;
+import com.mploed.dddwithspring.scoring.Money;
 import com.mploed.dddwithspring.scoring.PersonId;
 import com.mploed.dddwithspring.scoring.microarchitecture.Aggregate;
 import com.mploed.dddwithspring.scoring.microarchitecture.AggregateBuilder;
@@ -73,13 +74,13 @@ public class ApplicantAggregate {
 		}
 
 		public ApplicantAggregateBuilder accountBalance(int balance) {
-			this.accountBalance = new AccountBalance(balance);
+			this.accountBalance = new AccountBalance(new Money(balance));
 			return this;
 		}
 
 		public ApplicantAggregate build() {
 			if(this.accountBalance == null) {
-				this.accountBalance = new AccountBalance(0);
+				this.accountBalance = new AccountBalance(new Money());
 			}
 			return new ApplicantAggregate(this);
 		}

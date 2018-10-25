@@ -1,15 +1,17 @@
 package com.mploed.dddwithspring.scoring.financialSituation;
 
-class Incomings {
-	int salary;
-	private int otherIncome;
+import com.mploed.dddwithspring.scoring.Money;
 
-	Incomings(int salary, int otherIncome) {
+class Incomings {
+	private Money salary;
+	private Money otherIncome;
+
+	Incomings(Money salary, Money otherIncome) {
 		this.salary = salary;
 		this.otherIncome = otherIncome;
 	}
 
-	int sum() {
-		return salary + otherIncome;
+	Money sum() {
+		return salary.add(otherIncome);
 	}
 }

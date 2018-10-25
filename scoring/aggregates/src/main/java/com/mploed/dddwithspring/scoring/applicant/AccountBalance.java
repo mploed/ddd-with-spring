@@ -1,14 +1,16 @@
 package com.mploed.dddwithspring.scoring.applicant;
 
-class AccountBalance {
-	private int balance;
+import com.mploed.dddwithspring.scoring.Money;
 
-	AccountBalance(int balance) {
+class AccountBalance {
+	private Money balance;
+
+	AccountBalance(Money balance) {
 		this.balance = balance;
 	}
 
 	int calculateScoringPoints() {
-		if(balance > 8000) {
+		if(balance.isGreaterThan(new Money(8000))) {
 			return 10;
 		} else {
 			return 0;
