@@ -39,6 +39,9 @@ class AgencyResultRootEntity {
 
 	int calculateScoringPoints() {
 		int result = 0;
+		if (koCriteria.size() > 0) {
+			return result;
+		}
 		if (warningMessages.size() == 0) {
 			result += 5;
 		}
