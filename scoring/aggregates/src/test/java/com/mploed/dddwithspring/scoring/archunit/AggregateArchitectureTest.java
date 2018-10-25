@@ -27,7 +27,7 @@ public class AggregateArchitectureTest {
 	@Test
 	public void entityAndValueObjectVisibilityRule() {
 
-		ClassesShouldConjunction packagePrivateVisibility = classes().that().areNotAnnotatedWith(Aggregate.class).and().areNotAnnotatedWith(AggregateBuilder.class).should().bePackagePrivate();
+		ClassesShouldConjunction packagePrivateVisibility = classes().that().haveNameNotMatching((".*Test")).and().areNotAnnotatedWith(Aggregate.class).and().areNotAnnotatedWith(AggregateBuilder.class).should().bePackagePrivate();
 
 		packagePrivateVisibility.check(this.classes);
 
