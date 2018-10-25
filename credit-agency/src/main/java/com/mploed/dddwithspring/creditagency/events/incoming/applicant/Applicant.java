@@ -2,7 +2,6 @@ package com.mploed.dddwithspring.creditagency.events.incoming.applicant;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
 
 public class Applicant implements Serializable {
 
@@ -13,7 +12,7 @@ public class Applicant implements Serializable {
 
 	private Address address;
 
-	private MartialStatus martialStatus;
+	private MaritalStatus maritalStatus;
 
 	private Business business;
 
@@ -52,12 +51,12 @@ public class Applicant implements Serializable {
 		this.address = address;
 	}
 
-	public MartialStatus getMartialStatus() {
-		return martialStatus;
+	public MaritalStatus getMaritalStatus() {
+		return maritalStatus;
 	}
 
-	public void setMartialStatus(MartialStatus martialStatus) {
-		this.martialStatus = martialStatus;
+	public void setMaritalStatus(MaritalStatus maritalStatus) {
+		this.maritalStatus = maritalStatus;
 	}
 
 	public Business getBusiness() {
@@ -98,7 +97,7 @@ public class Applicant implements Serializable {
 				"firstName='" + firstName + '\'' +
 				", lastName='" + lastName + '\'' +
 				", address=" + address +
-				", martialStatus=" + martialStatus +
+				", maritalStatus=" + maritalStatus +
 				", business=" + business +
 				", employment=" + employment +
 				", employedSince=" + employedSince +

@@ -57,13 +57,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="martialStatus">Martial Status</label>
+                        <label for="maritalStatus">Marital Status</label>
 
-                        <select id="martialStatus" class="form-control" th:field="*{martialStatus}">
+                        <select id="maritalStatus" class="form-control" th:field="*{maritalStatus}">
                             <option value=""></option>
-                            <option th:each="martialStatus : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.applicant.MartialStatus).values()}"
-                                    th:value="${martialStatus}"
-                                    th:text="${martialStatus.displayName}">
+                            <option th:each="maritalStatus : ${T(com.mploed.dddwithspring.creditsalesfunnel.model.applicant.MaritalStatus).values()}"
+                                    th:value="${maritalStatus}"
+                                    th:text="${maritalStatus.displayName}">
                             </option>
                         </select>
                     </div>
