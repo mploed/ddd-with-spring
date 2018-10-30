@@ -1,14 +1,14 @@
 package com.mploed.dddwithspring.scoring.messaging;
 
 import com.mploed.dddwithspring.scoring.ApplicationNumber;
-import com.mploed.dddwithspring.scoring.ScoringApplicationService;
-import com.mploed.dddwithspring.scoring.events.ScoringPerformed;
+import com.mploed.dddwithspring.scoring.appservices.ScoringApplicationService;
+import com.mploed.dddwithspring.scoring.appservices.internalevents.PartOfScoringPerformed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SpringEventListener implements ApplicationListener<ScoringPerformed> {
+public class SpringEventListener implements ApplicationListener<PartOfScoringPerformed> {
 
 	private ScoringApplicationService scoringApplicationService;
 
@@ -18,7 +18,7 @@ public class SpringEventListener implements ApplicationListener<ScoringPerformed
 	}
 
 	@Override
-	public void onApplicationEvent(ScoringPerformed event) {
-		scoringApplicationService.performFinalScoring(new ApplicationNumber(event.getApplicationNumber()));
+	public void onApplicationEvent(PartOfScoringPerformed event) {
+		scoringApplicationService.performFinalScoring(event.getApplicationNumber());
 	}
 }

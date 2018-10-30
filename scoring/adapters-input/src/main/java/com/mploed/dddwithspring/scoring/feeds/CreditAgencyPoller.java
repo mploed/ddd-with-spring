@@ -1,7 +1,7 @@
 package com.mploed.dddwithspring.scoring.feeds;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mploed.dddwithspring.scoring.ScoringApplicationService;
+import com.mploed.dddwithspring.scoring.appservices.ScoringApplicationService;
 import com.mploed.dddwithspring.scoring.incoming.creditAgency.AgencyRating;
 import com.rometools.rome.feed.atom.Entry;
 import com.rometools.rome.feed.atom.Feed;
@@ -62,7 +62,12 @@ public class CreditAgencyPoller {
 					log.info(entry.getTitle() + " is new, processing");
 					try {
 						AgencyRating agencyRating = mapper.readValue(ratingAsJson, AgencyRating.class);
-						scoringApplicationService.scoreAgencyResult(agencyRating);
+						scoringApplicationService.scoreAgencyResult(agencyRating.getFirstName(),
+																		agencyRating.getLastName(),
+																	agencyRating.getStreet(),
+																	agencyRating.getPostCode(),
+																	agencyRating.getCity(),
+																	agencyRating.getPoints());
 						lastUpdateInFeed = entry.getUpdated();
 					} catch (IOException e) {
 						//we should handle this exception more properly

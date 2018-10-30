@@ -21,6 +21,7 @@
         <module>adapters-input</module>
         <module>adapters-output</module>
         <module>scoring-application</module>
+        <module>application-services</module>
     </modules>
 
 </project>

@@ -1,21 +1,21 @@
-package com.mploed.dddwithspring.scoring;
+package com.mploed.dddwithspring.scoring.appservices;
 
+import com.mploed.dddwithspring.scoring.ApplicationNumber;
+import com.mploed.dddwithspring.scoring.Money;
+import com.mploed.dddwithspring.scoring.PersonId;
 import com.mploed.dddwithspring.scoring.agencyResult.AgencyResultAggregate;
 import com.mploed.dddwithspring.scoring.agencyResult.AgencyResultProjection;
 import com.mploed.dddwithspring.scoring.agencyResult.AgencyResultRepository;
 import com.mploed.dddwithspring.scoring.applicant.ApplicantAggregate;
 import com.mploed.dddwithspring.scoring.applicant.ApplicantResultProjection;
 import com.mploed.dddwithspring.scoring.applicant.ApplicantResultRepository;
-import com.mploed.dddwithspring.scoring.events.ScoringPerformed;
-import com.mploed.dddwithspring.scoring.feeds.CreditAgencyPoller;
+import com.mploed.dddwithspring.scoring.appservices.dto.Applicant;
+import com.mploed.dddwithspring.scoring.appservices.dto.CreditApplication;
+import com.mploed.dddwithspring.scoring.appservices.dto.FinancialSituation;
+import com.mploed.dddwithspring.scoring.appservices.internalevents.PartOfScoringPerformed;
 import com.mploed.dddwithspring.scoring.financialSituation.FinancialSituationAggregate;
 import com.mploed.dddwithspring.scoring.financialSituation.FinancialSituationResultProjection;
 import com.mploed.dddwithspring.scoring.financialSituation.FinancialSituationResultRepository;
-import com.mploed.dddwithspring.scoring.incoming.AgencyMessage;
-import com.mploed.dddwithspring.scoring.incoming.AgencyResultArrivedEvent;
-import com.mploed.dddwithspring.scoring.incoming.ApplicationSubmittedEvent;
-import com.mploed.dddwithspring.scoring.incoming.applicant.Applicant;
-import com.mploed.dddwithspring.scoring.incoming.creditAgency.AgencyRating;
 import com.mploed.dddwithspring.scoring.scoringResult.ScoringResultAggregate;
 import com.mploed.dddwithspring.scoring.scoringResult.ScoringResultRepository;
 import org.slf4j.Logger;
@@ -48,14 +48,14 @@ public class ScoringApplicationService {
 		this.applicationEventPublisher = applicationEventPublisher;
 	}
 
-	public void scoreAgencyResult(AgencyRating agencyRating) {
+	public void scoreAgencyResult(String firstName, String lastName, String street, String postcode, String city, int agencyPoints ) {
 		AgencyResultAggregate.AgencyResultBuilder agencyResultBuilder = new AgencyResultAggregate.AgencyResultBuilder()
-				.forPerson(agencyRating.getFirstName(),
-						agencyRating.getLastName(),
-						agencyRating.getStreet(),
-						agencyRating.getPostCode(),
-						agencyRating.getCity())
-				.withPoints(agencyRating.getPoints());
+				.forPerson(firstName,
+						lastName,
+						street,
+						postcode,
+						city)
+				.withPoints(agencyPoints);
 
 		AgencyResultAggregate agencyResultAggregate = agencyResultBuilder.build();
 
@@ -63,42 +63,39 @@ public class ScoringApplicationService {
 		agencyResultRepository.save(agencyResultAggregate);
 
 		ApplicantResultProjection applicantResultProjection = applicantResultRepository.retrieve(agencyResultAggregate.getPersonId());
-		applicationEventPublisher.publishEvent(new ScoringPerformed(this, applicantResultProjection.getApplicationNumber()));
+		applicationEventPublisher.publishEvent(new PartOfScoringPerformed(this, new ApplicationNumber(applicantResultProjection.getApplicationNumber())));
 	}
 
-
-	public void scoreApplication(ApplicationSubmittedEvent applicationSubmittedEvent) {
-		ApplicationNumber applicationNumber = new ApplicationNumber(applicationSubmittedEvent.getApplicationNumber());
+	public void scoreApplication(CreditApplication creditApplication) {
 
 		try {
-			scoreApplicant(applicationSubmittedEvent, applicationNumber);
-			scoreFinancialSituation(applicationSubmittedEvent, applicationNumber);
-			applicationEventPublisher.publishEvent(new ScoringPerformed(this, applicationSubmittedEvent.getApplicationNumber()));
+			ApplicationNumber applicationNumber = creditApplication.getApplicationNumber();
+			scoreApplicant(applicationNumber, creditApplication.getApplicant());
+			scoreFinancialSituation(applicationNumber, creditApplication.getFinancialSituation());
+			applicationEventPublisher.publishEvent(new PartOfScoringPerformed(this, applicationNumber));
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 
 	}
-
-	private void scoreFinancialSituation(ApplicationSubmittedEvent applicationSubmittedEvent, ApplicationNumber applicationNumber) {
+	private void scoreFinancialSituation(ApplicationNumber applicationNumber, FinancialSituation financialSituation) {
 		FinancialSituationAggregate financialSituationAggregate = new FinancialSituationAggregate.FinancialSituationBuilder(applicationNumber)
-				.costOfLiving(applicationSubmittedEvent.getHousehold().getMonthlyExpenses().getCostOfLiving())
-				.otherIncome(applicationSubmittedEvent.getHousehold().getEarningCapacity().getFurtherIncome())
-				.rent(applicationSubmittedEvent.getHousehold().getMonthlyExpenses().getRent())
-				.salary(applicationSubmittedEvent.getHousehold().getEarningCapacity().getSalaryFirstApplicant())
+				.costOfLiving(financialSituation.getCostOfLiving())
+				.otherIncome(financialSituation.getFurtherIncome())
+				.rent(financialSituation.getRent())
+				.salary(financialSituation.getSalary())
 				.build();
 
 		financialSituationResultRepository.save(financialSituationAggregate);
 	}
 
-	private void scoreApplicant(ApplicationSubmittedEvent applicationSubmittedEvent, ApplicationNumber applicationNumber) {
-		Applicant applicant = applicationSubmittedEvent.getFirstApplicant();
+	private void scoreApplicant(ApplicationNumber applicationNumber, Applicant applicant) {
 		ApplicantAggregate applicantAggregate = new ApplicantAggregate.ApplicantAggregateBuilder(applicationNumber)
-				.city(applicant.getAddress().getCity())
-				.postCode(applicant.getAddress().getPostCode())
+				.city(applicant.getCity())
+				.postCode(applicant.getPostCode())
 				.firstName(applicant.getFirstName())
 				.lastName(applicant.getLastName())
-				.street(applicant.getAddress().getStreet())
+				.street(applicant.getStreet())
 				.build();
 
 		applicantResultRepository.save(applicantAggregate);

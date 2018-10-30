@@ -46,23 +46,23 @@ public class FinancialSituationAggregate {
 			this.applicationNumber = applicationNumber;
 		}
 
-		public FinancialSituationBuilder rent(int rent) {
-			this.rent = new Money(rent);
+		public FinancialSituationBuilder rent(Money rent) {
+			this.rent = rent;
 			return this;
 		}
 
-		public FinancialSituationBuilder costOfLiving(int costOfLiving) {
-			this.costOfLiving = new Money(costOfLiving);
+		public FinancialSituationBuilder costOfLiving(Money costOfLiving) {
+			this.costOfLiving = costOfLiving;
 			return this;
 		}
 
-		public FinancialSituationBuilder salary(int salary) {
-			this.salary = new Money(salary);
+		public FinancialSituationBuilder salary(Money salary) {
+			this.salary = salary;
 			return this;
 		}
 
-		public FinancialSituationBuilder otherIncome(int otherIncome) {
-			this.otherIncome = new Money(otherIncome);
+		public FinancialSituationBuilder otherIncome(Money otherIncome) {
+			this.otherIncome = otherIncome;
 			return this;
 		}
 
