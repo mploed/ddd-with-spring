@@ -1,5 +1,11 @@
 # ddd-with-spring
 
+<div align="center">
+
+[![Build Status](https://travis-ci.org/mploed/ddd-with-spring.svg?branch=master)](https://travis-ci.org/mploed/ddd-with-spring)
+
+</div>
+
 This repository aims at showcasing a way how you could implement various aspects from Domain-driven Design with the
 Spring ecosystem. It is also the demo project for my conference talk "Implementing Domain-driven Design with the Spring 
 ecosystem".
