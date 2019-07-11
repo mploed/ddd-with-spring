@@ -1,7 +1,11 @@
 package com.mploed.dddwithspring.scoring.appservices;
 
 import com.mploed.dddwithspring.scoring.ApplicationNumber;
+import com.mploed.dddwithspring.scoring.PersonId;
 import com.mploed.dddwithspring.scoring.agencyResult.AgencyResultAggregate;
+import com.mploed.dddwithspring.scoring.appservices.internalevents.CreditAgencyResultArrived;
+import com.mploed.dddwithspring.scoring.appservices.internalevents.CreditApplicationArrived;
+import com.mploed.dddwithspring.scoring.appservices.internalevents.ScoringPerformed;
 import com.mploed.dddwithspring.scoring.appservices.repositories.AgencyResultRepository;
 import com.mploed.dddwithspring.scoring.applicant.ApplicantAggregate;
 import com.mploed.dddwithspring.scoring.appservices.repositories.ApplicantResultRepository;
@@ -44,13 +48,16 @@ public class ScoringApplicationService {
 	}
 
 	public void scoreAgencyResult(String firstName, String lastName, String street, String postcode, String city, int agencyPoints ) {
-		AgencyResultAggregate.AgencyResultBuilder agencyResultBuilder = new AgencyResultAggregate.AgencyResultBuilder()
-				.forPerson(firstName,
-						lastName,
-						street,
-						postcode,
-						city)
+		PersonId personId = new PersonId.PersonIdBuilder(firstName,
+				lastName)
+				.city(city)
+				.street(street)
+				.postCode(postcode)
+				.build();
+		applicationEventPublisher.publishEvent(new CreditAgencyResultArrived(this, personId.toString()));
 
+		AgencyResultAggregate.AgencyResultBuilder agencyResultBuilder = new AgencyResultAggregate.AgencyResultBuilder()
+				.personId(personId)
 				.withPoints(agencyPoints);
 
 		AgencyResultAggregate agencyResultAggregate = agencyResultBuilder.build();
@@ -58,16 +65,15 @@ public class ScoringApplicationService {
 		agencyResultRepository.save(agencyResultAggregate);
 
 		ApplicantAggregate applicantAggregate = applicantResultRepository.retrieve(agencyResultAggregate.getPersonId());
-		applicationEventPublisher.publishEvent(new PartOfScoringPerformed(this, applicantAggregate.getApplicationNumber()));
+		applicationEventPublisher.publishEvent(new PartOfScoringPerformed(this, "Agency Result", applicantAggregate.getApplicationNumber()));
 	}
 
 	public void scoreApplication(CreditApplication creditApplication) {
-
+		applicationEventPublisher.publishEvent(new CreditApplicationArrived(this, creditApplication.getApplicationNumber().toString()));
 		try {
 			ApplicationNumber applicationNumber = creditApplication.getApplicationNumber();
 			scoreApplicant(applicationNumber, creditApplication.getApplicant());
 			scoreFinancialSituation(applicationNumber, creditApplication.getFinancialSituation());
-			applicationEventPublisher.publishEvent(new PartOfScoringPerformed(this, applicationNumber));
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
@@ -83,6 +89,7 @@ public class ScoringApplicationService {
 				.build();
 
 		financialSituationResultRepository.save(financialSituationAggregate);
+		applicationEventPublisher.publishEvent(new PartOfScoringPerformed(this, "Financial Situation", financialSituationAggregate.getApplicationNumber()));
 	}
 
 	private void scoreApplicant(ApplicationNumber applicationNumber, Applicant applicant) {
@@ -95,6 +102,8 @@ public class ScoringApplicationService {
 				.build();
 
 		applicantResultRepository.save(applicantAggregate);
+
+		applicationEventPublisher.publishEvent(new PartOfScoringPerformed(this, "Applicant", applicantAggregate.getApplicationNumber()));
 	}
 
 	public void performFinalScoring(ApplicationNumber applicationNumber) {
@@ -113,6 +122,8 @@ public class ScoringApplicationService {
 					.build();
 
 			scoringResultRepository.save(scoringResultAggregate);
+			ScoringPerformed scoringPerformedEvent = new ScoringPerformed(this, applicationNumber.toString(), applicantAggregate.getPersonId(), scoringResultAggregate.getScoreColor(), scoringResultAggregate.getScorePoints());
+			applicationEventPublisher.publishEvent(scoringPerformedEvent);
 		} else {
 			log.info("NOT everything is complete for " + applicationNumber.toString());
 

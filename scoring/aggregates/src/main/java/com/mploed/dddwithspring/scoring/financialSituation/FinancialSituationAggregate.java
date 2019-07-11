@@ -34,6 +34,10 @@ public class FinancialSituationAggregate {
 		}
 	}
 
+	public ApplicationNumber getApplicationNumber() {
+		return rootEntity.applicationNumber;
+	}
+
 	@AggregateBuilder
 	public static class FinancialSituationBuilder {
 		private final ApplicationNumber applicationNumber;
@@ -69,5 +73,7 @@ public class FinancialSituationAggregate {
 		public FinancialSituationAggregate build() {
 			return new FinancialSituationAggregate(this);
 		}
+
+
 	}
 }
