@@ -7,8 +7,8 @@ import com.mploed.dddwithspring.scoring.Money;
 class FinancialSituationRootEntity {
 	final ApplicationNumber applicationNumber;
 
-	private final Incomings incomings;
-	private final Outgoings outgoings;
+	final Incomings incomings;
+	final Outgoings outgoings;
 
 	FinancialSituationRootEntity(ApplicationNumber applicationNumber, Incomings incomings, Outgoings outgoings) {
 		this.applicationNumber = applicationNumber;

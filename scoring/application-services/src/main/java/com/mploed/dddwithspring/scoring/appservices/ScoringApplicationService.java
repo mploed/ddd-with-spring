@@ -1,23 +1,18 @@
 package com.mploed.dddwithspring.scoring.appservices;
 
 import com.mploed.dddwithspring.scoring.ApplicationNumber;
-import com.mploed.dddwithspring.scoring.Money;
-import com.mploed.dddwithspring.scoring.PersonId;
 import com.mploed.dddwithspring.scoring.agencyResult.AgencyResultAggregate;
-import com.mploed.dddwithspring.scoring.agencyResult.AgencyResultProjection;
-import com.mploed.dddwithspring.scoring.agencyResult.AgencyResultRepository;
+import com.mploed.dddwithspring.scoring.appservices.repositories.AgencyResultRepository;
 import com.mploed.dddwithspring.scoring.applicant.ApplicantAggregate;
-import com.mploed.dddwithspring.scoring.applicant.ApplicantResultProjection;
-import com.mploed.dddwithspring.scoring.applicant.ApplicantResultRepository;
+import com.mploed.dddwithspring.scoring.appservices.repositories.ApplicantResultRepository;
 import com.mploed.dddwithspring.scoring.appservices.dto.Applicant;
 import com.mploed.dddwithspring.scoring.appservices.dto.CreditApplication;
 import com.mploed.dddwithspring.scoring.appservices.dto.FinancialSituation;
 import com.mploed.dddwithspring.scoring.appservices.internalevents.PartOfScoringPerformed;
 import com.mploed.dddwithspring.scoring.financialSituation.FinancialSituationAggregate;
-import com.mploed.dddwithspring.scoring.financialSituation.FinancialSituationResultProjection;
-import com.mploed.dddwithspring.scoring.financialSituation.FinancialSituationResultRepository;
+import com.mploed.dddwithspring.scoring.appservices.repositories.FinancialSituationResultRepository;
 import com.mploed.dddwithspring.scoring.scoringResult.ScoringResultAggregate;
-import com.mploed.dddwithspring.scoring.scoringResult.ScoringResultRepository;
+import com.mploed.dddwithspring.scoring.appservices.repositories.ScoringResultRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,15 +50,15 @@ public class ScoringApplicationService {
 						street,
 						postcode,
 						city)
+
 				.withPoints(agencyPoints);
 
 		AgencyResultAggregate agencyResultAggregate = agencyResultBuilder.build();
 
-
 		agencyResultRepository.save(agencyResultAggregate);
 
-		ApplicantResultProjection applicantResultProjection = applicantResultRepository.retrieve(agencyResultAggregate.getPersonId());
-		applicationEventPublisher.publishEvent(new PartOfScoringPerformed(this, new ApplicationNumber(applicantResultProjection.getApplicationNumber())));
+		ApplicantAggregate applicantAggregate = applicantResultRepository.retrieve(agencyResultAggregate.getPersonId());
+		applicationEventPublisher.publishEvent(new PartOfScoringPerformed(this, applicantAggregate.getApplicationNumber()));
 	}
 
 	public void scoreApplication(CreditApplication creditApplication) {
@@ -78,6 +73,7 @@ public class ScoringApplicationService {
 		}
 
 	}
+
 	private void scoreFinancialSituation(ApplicationNumber applicationNumber, FinancialSituation financialSituation) {
 		FinancialSituationAggregate financialSituationAggregate = new FinancialSituationAggregate.FinancialSituationBuilder(applicationNumber)
 				.costOfLiving(financialSituation.getCostOfLiving())
@@ -102,18 +98,18 @@ public class ScoringApplicationService {
 	}
 
 	public void performFinalScoring(ApplicationNumber applicationNumber) {
-		FinancialSituationResultProjection financialSituationResultProjection = financialSituationResultRepository.retrieve(applicationNumber);
-		ApplicantResultProjection applicantResultProjection = applicantResultRepository.retrieve(applicationNumber);
-		AgencyResultProjection agencyResultProjection = agencyResultRepository.retrieve(new PersonId(applicantResultProjection.getPersonId()));
+		FinancialSituationAggregate financialSituationAggregate = financialSituationResultRepository.retrieve(applicationNumber);
+		ApplicantAggregate applicantAggregate = applicantResultRepository.retrieve(applicationNumber);
+		AgencyResultAggregate agencyResultAggregate = agencyResultRepository.retrieve(applicantAggregate.getPersonId());
 
-		if(financialSituationResultProjection != null && applicantResultProjection !=null && agencyResultProjection != null) {
+		if(financialSituationAggregate != null && applicantAggregate !=null && agencyResultAggregate != null) {
 
 			log.info("everything is complete for " + applicationNumber.toString());
 			ScoringResultAggregate scoringResultAggregate = new ScoringResultAggregate.Builder(applicationNumber)
-					.noGoCriteria(agencyResultProjection.isNoGoPresent())
-					.agencyScoring(agencyResultProjection.getPoints())
-					.financialSituationScoring(financialSituationResultProjection.getPoints())
-					.applicantScoring(applicantResultProjection.getPoints())
+					.noGoCriteria(!agencyResultAggregate.isAcceptable())
+					.agencyScoring(agencyResultAggregate.calculateScoringPoints())
+					.financialSituationScoring(financialSituationAggregate.calculateScoringPoints())
+					.applicantScoring(applicantAggregate.calculateScoringPoints())
 					.build();
 
 			scoringResultRepository.save(scoringResultAggregate);

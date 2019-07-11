@@ -20,4 +20,16 @@ class Address {
 			return 0;
 		}
 	}
+
+	String getCity() {
+		return city;
+	}
+
+	String getPostCode() {
+		return postCode;
+	}
+
+	String getStreet() {
+		return street;
+	}
 }
