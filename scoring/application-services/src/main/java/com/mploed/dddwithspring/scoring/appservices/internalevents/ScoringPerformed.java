@@ -4,29 +4,31 @@ import com.mploed.dddwithspring.scoring.ApplicationNumber;
 import com.mploed.dddwithspring.scoring.PersonId;
 import org.springframework.context.ApplicationEvent;
 
-public class PartOfScoringPerformed extends ApplicationEvent {
+public class ScoringPerformed extends ApplicationEvent {
 	private ApplicationNumber applicationNumber;
 	private PersonId personId;
-	private String cluster;
+	private String scoreColor;
+	private int points;
 
-	public PartOfScoringPerformed(Object source, String cluster, String applicationNumber, PersonId personId) {
+	public ScoringPerformed(Object source, String applicationNumber, PersonId personId, String scoreColor, int points) {
 		super(source);
 		this.applicationNumber = new ApplicationNumber(applicationNumber);
 		this.personId = personId;
+		this.scoreColor = scoreColor;
+		this.points = points;
 	}
 
 
-	public PartOfScoringPerformed(Object source, String cluster, PersonId personId) {
+	public ScoringPerformed(Object source, PersonId personId) {
 		super(source);
 		this.personId = personId;
 	}
 
 
 
-	public PartOfScoringPerformed(Object source, String cluster, ApplicationNumber applicationNumber) {
+	public ScoringPerformed(Object source, ApplicationNumber applicationNumber) {
 		super(source);
 		this.applicationNumber = applicationNumber;
-		this.cluster = cluster;
 	}
 
 	public ApplicationNumber getApplicationNumber() {
@@ -37,7 +39,11 @@ public class PartOfScoringPerformed extends ApplicationEvent {
 		return personId;
 	}
 
-	public String getCluster() {
-		return cluster;
+	public String getScoreColor() {
+		return scoreColor;
+	}
+
+	public int getPoints() {
+		return points;
 	}
 }
