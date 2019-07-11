@@ -14,6 +14,8 @@ public class AgencyResultTest {
 				.forPerson("Michael", "Plöd", "Kreuzstrasse 16", "80331", "München")
 				.withPoints(95)
 				.build();
+
+
 		assertTrue(agencyResultAggregate.isAcceptable());
 		assertEquals(20, agencyResultAggregate.calculateScoringPoints());
 	}

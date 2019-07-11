@@ -1,7 +1,8 @@
 package com.mploed.dddwithspring.scoring.financialSituation;
 
 import com.mploed.dddwithspring.scoring.ApplicationNumber;
-import com.mploed.dddwithspring.scoring.applicant.ApplicantAggregate;
+import com.mploed.dddwithspring.scoring.Money;
+import com.mploed.dddwithspring.scoring.appservices.repositories.FinancialSituationResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -23,13 +24,27 @@ public class FinancialSituationResultJPARepository implements FinancialSituation
 	public void save(FinancialSituationAggregate financialSituationAggregate) {
 		FinancialSituationResultProjection projection = new FinancialSituationResultProjection();
 		projection.setApplicationNumber(financialSituationAggregate.rootEntity.applicationNumber.toString());
-		projection.setPoints(financialSituationAggregate.calculateScoringPoints());
+		projection.setIncomingOther(financialSituationAggregate.rootEntity.incomings.otherIncome.getAmount());
+		projection.setIncomingSalary(financialSituationAggregate.rootEntity.incomings.salary.getAmount());
+		projection.setOutgoingCostOfLiving(financialSituationAggregate.rootEntity.outgoings.costOfLiving.getAmount());
+		projection.setOutgoingRent(financialSituationAggregate.rootEntity.outgoings.rent.getAmount());
 		dao.save(projection);
 	}
 
 	@Override
-	public FinancialSituationResultProjection retrieve(ApplicationNumber applicationNumber) {
-		return dao.findByApplicationNumber(applicationNumber.toString());
+	public FinancialSituationAggregate retrieve(ApplicationNumber applicationNumber) {
+		FinancialSituationResultProjection projection = dao.findByApplicationNumber(applicationNumber.toString());
+		if(projection != null) {
+			return new FinancialSituationAggregate.FinancialSituationBuilder(new ApplicationNumber(projection.getApplicationNumber()))
+					.costOfLiving(new Money(projection.getOutgoingCostOfLiving()))
+					.otherIncome(new Money(projection.getIncomingOther()))
+					.rent(new Money(projection.getOutgoingRent()))
+					.salary(new Money(projection.getIncomingSalary()))
+					.build();
+		} else {
+			return null;
+		}
+
 	}
 
 }

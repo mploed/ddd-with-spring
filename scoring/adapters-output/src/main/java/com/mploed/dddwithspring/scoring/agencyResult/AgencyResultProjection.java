@@ -1,8 +1,11 @@
 package com.mploed.dddwithspring.scoring.agencyResult;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class AgencyResultProjection {
@@ -11,7 +14,12 @@ public class AgencyResultProjection {
 	private Long id;
 	private String personId;
 	private int points;
-	private boolean noGoPresent;
+
+	@ElementCollection
+	private Set<AgencyMessage> koCriteria = new HashSet<>();
+
+	@ElementCollection
+	private Set<AgencyMessage> warnings = new HashSet<>();
 
 	private Long getId() {
 		return id;
@@ -37,11 +45,27 @@ public class AgencyResultProjection {
 		this.points = points;
 	}
 
-	public boolean isNoGoPresent() {
-		return noGoPresent;
+	public Set<AgencyMessage> getKoCriteria() {
+		return koCriteria;
 	}
 
-	public void setNoGoPresent(boolean noGoPresent) {
-		this.noGoPresent = noGoPresent;
+	public void setKoCriteria(Set<AgencyMessage> koCriteria) {
+		this.koCriteria = koCriteria;
+	}
+
+	public Set<AgencyMessage> getWarnings() {
+		return warnings;
+	}
+
+	public void setWarnings(Set<AgencyMessage> warnings) {
+		this.warnings = warnings;
+	}
+
+	public void addWarning(AgencyMessage agencyMessage) {
+		this.warnings.add(agencyMessage);
+	}
+
+	public void addKoCriteria(AgencyMessage agencyMessage) {
+		this.koCriteria.add(agencyMessage);
 	}
 }

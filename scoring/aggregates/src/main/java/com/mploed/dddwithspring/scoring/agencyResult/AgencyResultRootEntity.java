@@ -19,6 +19,14 @@ class AgencyResultRootEntity {
 		this.warningMessages = new HashSet<WarningMessage>();
 	}
 
+	Set<KoCriteria> getKoCriteria() {
+		return koCriteria;
+	}
+
+	Set<WarningMessage> getWarningMessages() {
+		return warningMessages;
+	}
+
 	void addAllKoCriteria(Collection<KoCriteria> koCriteria) {
 		this.koCriteria.addAll(koCriteria);
 	}

@@ -2,6 +2,7 @@ package com.mploed.dddwithspring.scoring;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 public class PersonId {
 	private String personId;
@@ -74,6 +75,23 @@ public class PersonId {
 
 		public PersonId build() {
 			return new PersonId(this);
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			PersonIdBuilder that = (PersonIdBuilder) o;
+			return Objects.equals(firstName, that.firstName) &&
+					Objects.equals(lastName, that.lastName) &&
+					Objects.equals(street, that.street) &&
+					Objects.equals(postCode, that.postCode) &&
+					Objects.equals(city, that.city);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(firstName, lastName, street, postCode, city);
 		}
 	}
 }

@@ -7,9 +7,16 @@ import com.mploed.dddwithspring.scoring.PersonId;
 import com.mploed.dddwithspring.scoring.microarchitecture.Aggregate;
 import com.mploed.dddwithspring.scoring.microarchitecture.AggregateBuilder;
 
+import java.math.BigDecimal;
+
 @Aggregate
 public class ApplicantAggregate {
-	 ApplicantRootEntity applicantRootEntity;
+	private final PersonId personId;
+	private final ApplicationNumber applicationNumber;
+	private final String name;
+	private final String lastName;
+	private final Address address;
+	private final AccountBalance balance;
 
 
 	private ApplicantAggregate(ApplicantAggregateBuilder builder) {
@@ -20,17 +27,45 @@ public class ApplicantAggregate {
 				.build();
 
 		Address address = new Address(builder.street, builder.postCode, builder.city);
-		this.applicantRootEntity = new ApplicantRootEntity(personId,
-				builder.applicationNumber,
-				builder.firstName,
-				builder.lastName,
-				address,
-				builder.accountBalance);
+		this.address = address;
+		this.applicationNumber = builder.applicationNumber;
+		this.balance = builder.accountBalance;
+		this.lastName = builder.lastName;
+		this.personId = personId;
+		this.name = builder.firstName;
+
 
 	}
 
 	public int calculateScoringPoints() {
-		return applicantRootEntity.calculateScoringPoints();
+		int result = 0;
+		result += balance.calculateScoringPoints();
+		result += address.calculateScoringPoints();
+		return result;
+	}
+
+	public ApplicationNumber getApplicationNumber() {
+		return this.applicationNumber;
+	}
+
+	public PersonId getPersonId() {
+		return this.personId;
+	}
+
+	String getName() {
+		return name;
+	}
+
+	String getLastName() {
+		return lastName;
+	}
+
+	Address getAddress() {
+		return address;
+	}
+
+	AccountBalance getBalance() {
+		return balance;
 	}
 
 	@AggregateBuilder
@@ -74,6 +109,11 @@ public class ApplicantAggregate {
 		}
 
 		public ApplicantAggregateBuilder accountBalance(int balance) {
+			this.accountBalance = new AccountBalance(new Money(balance));
+			return this;
+		}
+
+		public ApplicantAggregateBuilder accountBalance(BigDecimal balance) {
 			this.accountBalance = new AccountBalance(new Money(balance));
 			return this;
 		}

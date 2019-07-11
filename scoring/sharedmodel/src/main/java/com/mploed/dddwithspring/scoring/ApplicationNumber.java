@@ -1,14 +1,14 @@
 package com.mploed.dddwithspring.scoring;
 
 public class ApplicationNumber {
-	private String applicatioNumber;
+	private String applicationNumber;
 
-	public ApplicationNumber(String applicatioNumber) {
-		this.applicatioNumber = applicatioNumber;
+	public ApplicationNumber(String applicationNumber) {
+		this.applicationNumber = applicationNumber;
 	}
 
 	@Override
 	public String toString() {
-		return applicatioNumber;
+		return applicationNumber;
 	}
 }

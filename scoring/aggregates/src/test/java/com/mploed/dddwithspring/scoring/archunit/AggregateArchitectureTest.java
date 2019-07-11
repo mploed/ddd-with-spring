@@ -22,12 +22,16 @@ public class AggregateArchitectureTest {
 		classes = new ClassFileImporter().importPackagesOf(ScoringResultAggregate.class,
 				ApplicantAggregate.class,
 				FinancialSituationAggregate.class,
-				AgencyResultAggregate.class);
+				AgencyResultAggregate.class)
+				;
 	}
 	@Test
 	public void entityAndValueObjectVisibilityRule() {
 
-		ClassesShouldConjunction packagePrivateVisibility = classes().that().haveNameNotMatching((".*Test")).and().areNotAnnotatedWith(Aggregate.class).and().areNotAnnotatedWith(AggregateBuilder.class).should().bePackagePrivate();
+		ClassesShouldConjunction packagePrivateVisibility = classes().that().haveNameNotMatching((".*Test"))
+				.and().areNotAnnotatedWith(Aggregate.class)
+				.and().areNotAnnotatedWith(AggregateBuilder.class)
+				.should().bePackagePrivate();
 
 		packagePrivateVisibility.check(this.classes);
 
