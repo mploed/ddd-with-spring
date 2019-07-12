@@ -15,7 +15,7 @@ class AccountBalance {
 	}
 
 	int calculateScoringPoints() {
-		if(balance.isGreaterThan(new Money(8000))) {
+		if(balance.isGreaterThan(new Money(3000))) {
 			return 10;
 		} else {
 			return 0;

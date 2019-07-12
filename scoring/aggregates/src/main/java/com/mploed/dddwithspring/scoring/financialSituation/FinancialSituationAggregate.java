@@ -18,19 +18,19 @@ public class FinancialSituationAggregate {
 	public int calculateScoringPoints() {
 		Money monthlyBalance = rootEntity.sum();
 		if(monthlyBalance.isGreaterThan(new Money(2000))) {
-			return 20;
+			return 35;
 		} else if(monthlyBalance.isGreaterThan(new Money(1000))) {
-			return 15;
+			return 20;
 		} else if(monthlyBalance.isGreaterThan(new Money(750))) {
-			return 10;
+			return 15;
 		} else if(monthlyBalance.isGreaterThan(new Money(500))) {
-			return 5;
+			return 10;
 		} else if (monthlyBalance.isGreaterThan(new Money(250))) {
-			return 2;
+			return 5;
 		} else if( monthlyBalance.isGreaterThan(new Money(0))) {
 			return 0;
 		} else {
-			return -20;
+			return -10;
 		}
 	}
 
