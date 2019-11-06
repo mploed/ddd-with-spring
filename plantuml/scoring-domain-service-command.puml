@@ -1,7 +1,7 @@
 @startuml
 boundary SomeClient as "Some Client" order 5
 participant ScoringApplicationService as "Scoring\nApplication\nService" order 10
-participant ScoringDomainService as "Scoring\nDomain\nService" order 70
+participant ScoringDomainServiceCommand as "Scoring\nDomain\nService\nCommand" order 70
 participant ApplicantClusterRepository as "Applicant\nCluster\nRepository" order 30
 participant AgencyResultClusterRepository as "AgencyResult\nCluster\nRepository" order 40
 participant MonthlyHouseholdBalanceClusterRespository as "Monthly\nHouseholdBalance\nCluster\nRespository" order 50
@@ -23,8 +23,13 @@ RealEstateFinancingClusterRepository -> ScoringApplicationService: RealEstateFin
 end
 
 group Perform the actual scoring in the domain service
-ScoringApplicationService -> ScoringDomainService: performScoring(applicantClusterAggregate,\n\t\t\t\tagencyResultClusterAggregate,\n\t\t\t\tmonthlyHouseholdBalanceAggregate,\n\t\t\t\trealEstateFinancingClusterAggregate)
-ScoringDomainService --> ScoringApplicationService: ScoringColor
+ScoringApplicationService -> ScoringDomainServiceCommand: new(scoringType, applicationNumber)
+ScoringApplicationService -> ScoringDomainServiceCommand: addApplicantCluster(applicantCluster)
+ScoringApplicationService -> ScoringDomainServiceCommand: addAgencyResultCluster(agencyResultCluster)
+ScoringApplicationService -> ScoringDomainServiceCommand: addMonthlyHouseholdBalanceCluster(monthlyHouseholdBalanceCluster)
+ScoringApplicationService -> ScoringDomainServiceCommand: addRealEstateFinancingCluster(realEstateFinancingCluster)
+ScoringApplicationService -> ScoringDomainServiceCommand: execute()
+ScoringDomainServiceCommand --> ScoringApplicationService: ScoringColor or Pre/MainScoringPerformedRed/GreenEvent
 end
 
 ScoringApplicationService -> ScoringApplicationService: commitTransaction

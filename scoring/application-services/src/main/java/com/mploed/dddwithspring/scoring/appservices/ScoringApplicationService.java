@@ -3,6 +3,7 @@ package com.mploed.dddwithspring.scoring.appservices;
 import com.mploed.dddwithspring.scoring.ApplicationNumber;
 import com.mploed.dddwithspring.scoring.PersonId;
 import com.mploed.dddwithspring.scoring.agencyResult.AgencyResultAggregate;
+import com.mploed.dddwithspring.scoring.agencyResult.WarningMessage;
 import com.mploed.dddwithspring.scoring.appservices.internalevents.CreditAgencyResultArrived;
 import com.mploed.dddwithspring.scoring.appservices.internalevents.CreditApplicationArrived;
 import com.mploed.dddwithspring.scoring.appservices.internalevents.ScoringPerformed;
@@ -58,9 +59,12 @@ public class ScoringApplicationService {
 
 		AgencyResultAggregate.AgencyResultBuilder agencyResultBuilder = new AgencyResultAggregate.AgencyResultBuilder()
 				.personId(personId)
+				.withKoCriteria("100", "is bankrupt")
+				.withKoCriteria("888", "did not feed the pug")
 				.withPoints(agencyPoints);
 
 		AgencyResultAggregate agencyResultAggregate = agencyResultBuilder.build();
+
 
 		agencyResultRepository.save(agencyResultAggregate);
 

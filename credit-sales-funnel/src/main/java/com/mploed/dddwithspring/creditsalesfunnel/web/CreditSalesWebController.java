@@ -64,7 +64,7 @@ public class CreditSalesWebController {
 	}
 
 	@PostMapping(path = "/application/{applicationNumber}")
-	public String submitApplication(@PathVariable String applicationNumber) {
+	public RedirectView submitApplication(@PathVariable String applicationNumber) {
 		Applicant firstApplicant = applicantRepository.findByApplicationNumberAndApplicantNumber(applicationNumber, "1");
 		boolean firstApplicantValid = isValid(firstApplicant);
 
@@ -97,7 +97,7 @@ public class CreditSalesWebController {
 			creditSalesFunnelChannels.creditApplicationSubmittedOut().send(MessageBuilder.withPayload(event).build());
 		}
 
-		return "redirect:/";
+		return new RedirectView("/application/" + applicationNumber);
 	}
 
 	@GetMapping(path = "/application/{applicationNumber}")
