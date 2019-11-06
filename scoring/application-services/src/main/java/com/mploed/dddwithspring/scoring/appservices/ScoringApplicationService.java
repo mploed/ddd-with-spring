@@ -3,7 +3,6 @@ package com.mploed.dddwithspring.scoring.appservices;
 import com.mploed.dddwithspring.scoring.ApplicationNumber;
 import com.mploed.dddwithspring.scoring.PersonId;
 import com.mploed.dddwithspring.scoring.agencyResult.AgencyResultAggregate;
-import com.mploed.dddwithspring.scoring.agencyResult.WarningMessage;
 import com.mploed.dddwithspring.scoring.appservices.internalevents.CreditAgencyResultArrived;
 import com.mploed.dddwithspring.scoring.appservices.internalevents.CreditApplicationArrived;
 import com.mploed.dddwithspring.scoring.appservices.internalevents.ScoringPerformed;
@@ -64,8 +63,6 @@ public class ScoringApplicationService {
 				.withPoints(agencyPoints);
 
 		AgencyResultAggregate agencyResultAggregate = agencyResultBuilder.build();
-
-
 		agencyResultRepository.save(agencyResultAggregate);
 
 		ApplicantAggregate applicantAggregate = applicantResultRepository.retrieve(agencyResultAggregate.getPersonId());
@@ -116,7 +113,6 @@ public class ScoringApplicationService {
 		AgencyResultAggregate agencyResultAggregate = agencyResultRepository.retrieve(applicantAggregate.getPersonId());
 
 		if(financialSituationAggregate != null && applicantAggregate !=null && agencyResultAggregate != null) {
-
 			log.info("everything is complete for " + applicationNumber.toString());
 			ScoringResultAggregate scoringResultAggregate = new ScoringResultAggregate.Builder(applicationNumber)
 					.noGoCriteria(!agencyResultAggregate.isAcceptable())
