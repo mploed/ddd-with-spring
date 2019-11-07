@@ -1,0 +1,20 @@
+@startuml
+
+skinparam componentStyle uml2
+skinparam component {
+  BorderColor #grey
+  BackgroundColor #white
+}
+
+[AgencyResult] <<..scoring.agencyResult..>>
+[Applicant] <<..scoring.applicant..>>
+[FinancialSituation] <<..scoring.financialSituation..>>
+[ScoringResult] <<..scoring.scoringResult..>>
+[SharedKernel] <<..scoring>>
+
+[AgencyResult] --> [SharedKernel]
+[Applicant] --> [SharedKernel]
+[FinancialSituation] --> [SharedKernel]
+[ScoringResult] --> [SharedKernel]
+
+@enduml

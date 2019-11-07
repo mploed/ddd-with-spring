@@ -1,73 +1,65 @@
 package com.mploed.dddwithspring.scoring.archunit;
 
-import com.mploed.dddwithspring.scoring.microarchitecture.Aggregate;
-import com.mploed.dddwithspring.scoring.microarchitecture.AggregateBuilder;
+import java.net.URL;
+
 import com.mploed.dddwithspring.scoring.agencyResult.AgencyResultAggregate;
 import com.mploed.dddwithspring.scoring.applicant.ApplicantAggregate;
 import com.mploed.dddwithspring.scoring.financialSituation.FinancialSituationAggregate;
+import com.mploed.dddwithspring.scoring.microarchitecture.Aggregate;
+import com.mploed.dddwithspring.scoring.microarchitecture.AggregateBuilder;
 import com.mploed.dddwithspring.scoring.scoringResult.ScoringResultAggregate;
 import com.tngtech.archunit.core.domain.JavaClasses;
-import com.tngtech.archunit.core.importer.ClassFileImporter;
-import com.tngtech.archunit.core.importer.ImportOption;
+import com.tngtech.archunit.core.importer.ImportOption.DontIncludeTests;
 import com.tngtech.archunit.junit.AnalyzeClasses;
+import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.junit.ArchUnitRunner;
-import com.tngtech.archunit.lang.syntax.elements.ClassesShouldConjunction;
-import org.junit.Before;
-import org.junit.Test;
+import com.tngtech.archunit.lang.ArchRule;
 import org.junit.runner.RunWith;
-
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
+import static com.tngtech.archunit.library.plantuml.PlantUmlArchCondition.Configurations.consideringOnlyDependenciesInAnyPackage;
+import static com.tngtech.archunit.library.plantuml.PlantUmlArchCondition.adhereToPlantUmlDiagram;
 
+@RunWith(ArchUnitRunner.class)
+@AnalyzeClasses(
+        packagesOf = {ScoringResultAggregate.class, ApplicantAggregate.class, FinancialSituationAggregate.class, AgencyResultAggregate.class},
+        importOptions = DontIncludeTests.class)
 public class AggregateArchitectureTest {
-	private JavaClasses classes;
+    private static final URL scoringDiagram = AggregateArchitectureTest.class.getResource("scoring.puml");
 
-	@Before
-	public void setUp() {
-		classes = new ClassFileImporter()
-				.withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
-				.importPackagesOf(ScoringResultAggregate.class,
-				ApplicantAggregate.class,
-				FinancialSituationAggregate.class,
-				AgencyResultAggregate.class)
+    @ArchTest
+    public static ArchRule entityAndValueObjectVisibilityRule =
+            classes()
+                    .that().areNotAnnotatedWith(Aggregate.class)
+                    .and().areNotAnnotatedWith(AggregateBuilder.class)
+                    .should().bePackagePrivate();
 
-				;
-	}
+    @ArchTest
+    public static void aggregateAnnotationRules(JavaClasses importedClasses) {
+        ArchRule namingToAnnotation = classes().that().haveSimpleNameEndingWith("Aggregate").should().beAnnotatedWith(Aggregate.class);
+        namingToAnnotation.check(importedClasses);
 
-	@Test
-	public void entityAndValueObjectVisibilityRule() {
+        ArchRule annotationToNaming = classes().that().areAnnotatedWith(Aggregate.class).should().haveSimpleNameEndingWith("Aggregate");
+        annotationToNaming.check(importedClasses);
+    }
 
-		ClassesShouldConjunction packagePrivateVisibility = classes().that()
-				.areNotAnnotatedWith(Aggregate.class)
-				.and().areNotAnnotatedWith(AggregateBuilder.class)
-				.should().bePackagePrivate();
+    @ArchTest
+    public static ArchRule aggregateVisibilityRule =
+            classes().that().areAnnotatedWith(Aggregate.class).should().bePublic();
 
-		packagePrivateVisibility.check(this.classes);
+    @ArchTest
+    public static ArchRule aggregateToRootEntityReference =
+            classes()
+                    .that().areAnnotatedWith(Aggregate.class)
+                    .should().accessClassesThat().haveSimpleNameEndingWith("RootEntity");
 
-	}
+    @ArchTest
+    public static final ArchRule aggregateFrameworkRule =
+            classes()
+                    .should().onlyDependOnClassesThat().resideInAnyPackage("com.mploed.dddwithspring..", "java..", "");
 
-
-	@Test
-	public void aggregateAnnotationRules() {
-		ClassesShouldConjunction namingToAnnotation = classes().that().haveNameMatching(".*Aggregate").should().beAnnotatedWith(Aggregate.class);
-		namingToAnnotation.check(this.classes);
-
-		ClassesShouldConjunction annotationToNaming = classes().that().areAnnotatedWith(Aggregate.class).should().haveNameMatching(".*Aggregate");
-		annotationToNaming.check(this.classes);
-
-	}
-
-	@Test
-	public void aggregateVisibilityRule() {
-
-		ClassesShouldConjunction publicVisibility = classes().that().areAnnotatedWith(Aggregate.class).should().bePublic();
-
-		publicVisibility.check(this.classes);
-
-	}
-
-	@Test
-	public void aggregateToRootEntityReference() {
-		classes().that().areAnnotatedWith(Aggregate.class).should().accessClassesThat().haveNameMatching(".*RootEntity");
-	}
-
+    @ArchTest
+    public static final ArchRule subdomainDependenciesRule =
+            classes()
+                    .should(adhereToPlantUmlDiagram(scoringDiagram,
+                            consideringOnlyDependenciesInAnyPackage("com.mploed.dddwithspring..")));
 }
