@@ -58,10 +58,11 @@ public class ScoringApplicationService {
 
 		AgencyResultAggregate.AgencyResultBuilder agencyResultBuilder = new AgencyResultAggregate.AgencyResultBuilder()
 				.personId(personId)
+				.withKoCriteria("100", "is bankrupt")
+				.withKoCriteria("888", "did not feed the pug")
 				.withPoints(agencyPoints);
 
 		AgencyResultAggregate agencyResultAggregate = agencyResultBuilder.build();
-
 		agencyResultRepository.save(agencyResultAggregate);
 
 		ApplicantAggregate applicantAggregate = applicantResultRepository.retrieve(agencyResultAggregate.getPersonId());
@@ -112,7 +113,6 @@ public class ScoringApplicationService {
 		AgencyResultAggregate agencyResultAggregate = agencyResultRepository.retrieve(applicantAggregate.getPersonId());
 
 		if(financialSituationAggregate != null && applicantAggregate !=null && agencyResultAggregate != null) {
-
 			log.info("everything is complete for " + applicationNumber.toString());
 			ScoringResultAggregate scoringResultAggregate = new ScoringResultAggregate.Builder(applicationNumber)
 					.noGoCriteria(!agencyResultAggregate.isAcceptable())
