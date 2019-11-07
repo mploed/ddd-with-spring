@@ -1,0 +1,27 @@
+@startuml
+actor Customer
+actor BankClerk
+
+Customer -> Application: Fill out
+Customer -> Application: Hand in
+Application->Application: validate
+Application -> Scoring: PreScoring
+Scoring -> CreditAgency: obtain rating
+Scoring -> PropertyEvaluation: rate property
+Scoring -> CoreBanking: retrieve cash balance
+Scoring->Scoring: calculate points
+Scoring->Scoring: ko criteria check
+Scoring->Scoring: calculate result
+Scoring --> Application: Scoring Result
+alt PreScoring green
+    Application -> Customer: Ask for Documents
+    ... Wait for Customer to send the documents ...
+    Customer -> Application: Send Documents
+    BankClerk -> Application: Verify Documents & Application
+    BankClerk -> Application: Mark as verified
+else PreScoring red
+    Application -> Customer: Decline Application
+    note left: decide on communication channel
+end
+
+@enduml

@@ -8,9 +8,13 @@ import com.mploed.dddwithspring.scoring.financialSituation.FinancialSituationAgg
 import com.mploed.dddwithspring.scoring.scoringResult.ScoringResultAggregate;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
+import com.tngtech.archunit.core.importer.ImportOption;
+import com.tngtech.archunit.junit.AnalyzeClasses;
+import com.tngtech.archunit.junit.ArchUnitRunner;
 import com.tngtech.archunit.lang.syntax.elements.ClassesShouldConjunction;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
@@ -19,17 +23,21 @@ public class AggregateArchitectureTest {
 
 	@Before
 	public void setUp() {
-		classes = new ClassFileImporter().importPackagesOf(ScoringResultAggregate.class,
+		classes = new ClassFileImporter()
+				.withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
+				.importPackagesOf(ScoringResultAggregate.class,
 				ApplicantAggregate.class,
 				FinancialSituationAggregate.class,
 				AgencyResultAggregate.class)
+
 				;
 	}
+
 	@Test
 	public void entityAndValueObjectVisibilityRule() {
 
-		ClassesShouldConjunction packagePrivateVisibility = classes().that().haveNameNotMatching((".*Test"))
-				.and().areNotAnnotatedWith(Aggregate.class)
+		ClassesShouldConjunction packagePrivateVisibility = classes().that()
+				.areNotAnnotatedWith(Aggregate.class)
 				.and().areNotAnnotatedWith(AggregateBuilder.class)
 				.should().bePackagePrivate();
 

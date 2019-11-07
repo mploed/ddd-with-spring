@@ -41,4 +41,4 @@ When you have docker up and running you need to perform the following steps on t
 
 1. ./mvnw clean package
 2. docker-compose up --build
-3. After everything has started you can open http://localhost:9000 in a browser of your choice
+3. After everything has started you can open http://localhost:8080 in a browser of your choice
