@@ -3,14 +3,14 @@
 <body>
 <th:block layout:fragment="content">
 
+
     <div class="container theme-showcase" role="main">
+
         <form th:if="${readForSubmission}" th:action="@{/application/__${applicationNumber}__}" method="POST">
             <br/>
-
             <button type="submit" class="btn btn-success">Submit Application Form</button>
-
-
         </form>
+
         <br/>
         <table class="table">
             <thead class="thead-light">
@@ -109,6 +109,9 @@
             <tfoot></tfoot>
         </table>
         <br/>
+    </div>
+    <div class="embed-responsive embed-responsive-16by9">
+        <iframe src="http://localhost:9001/scoring/index.html" class="embed-responsive-item"/>
     </div>
 </th:block>
 </body>

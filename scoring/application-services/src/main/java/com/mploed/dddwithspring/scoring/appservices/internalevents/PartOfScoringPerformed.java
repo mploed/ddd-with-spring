@@ -7,24 +7,26 @@ import org.springframework.context.ApplicationEvent;
 public class PartOfScoringPerformed extends ApplicationEvent {
 	private ApplicationNumber applicationNumber;
 	private PersonId personId;
+	private String cluster;
 
-	public PartOfScoringPerformed(Object source, String applicationNumber, PersonId personId) {
+	public PartOfScoringPerformed(Object source, String cluster, String applicationNumber, PersonId personId) {
 		super(source);
 		this.applicationNumber = new ApplicationNumber(applicationNumber);
 		this.personId = personId;
 	}
 
 
-	public PartOfScoringPerformed(Object source, PersonId personId) {
+	public PartOfScoringPerformed(Object source, String cluster, PersonId personId) {
 		super(source);
 		this.personId = personId;
 	}
 
 
 
-	public PartOfScoringPerformed(Object source, ApplicationNumber applicationNumber) {
+	public PartOfScoringPerformed(Object source, String cluster, ApplicationNumber applicationNumber) {
 		super(source);
 		this.applicationNumber = applicationNumber;
+		this.cluster = cluster;
 	}
 
 	public ApplicationNumber getApplicationNumber() {
@@ -33,5 +35,9 @@ public class PartOfScoringPerformed extends ApplicationEvent {
 
 	public PersonId getPersonId() {
 		return personId;
+	}
+
+	public String getCluster() {
+		return cluster;
 	}
 }

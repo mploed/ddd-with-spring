@@ -15,7 +15,6 @@ import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.junit.ArchUnitRunner;
 import com.tngtech.archunit.lang.ArchRule;
 import org.junit.runner.RunWith;
-
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.library.plantuml.PlantUmlArchCondition.Configurations.consideringOnlyDependenciesInAnyPackage;
 import static com.tngtech.archunit.library.plantuml.PlantUmlArchCondition.adhereToPlantUmlDiagram;
@@ -63,5 +62,4 @@ public class AggregateArchitectureTest {
             classes()
                     .should(adhereToPlantUmlDiagram(scoringDiagram,
                             consideringOnlyDependenciesInAnyPackage("com.mploed.dddwithspring..")));
-
 }

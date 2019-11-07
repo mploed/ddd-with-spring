@@ -65,6 +65,19 @@ services:
             - ddd-rabbit-mq:rabbit-mq
         logging:
             driver: json-file
+    varnish:
+        build:
+          infrastructure_varnish
+        links:
+          - credit-sales-funnel
+          - scoring
+        depends_on:
+          - credit-sales-funnel
+          - scoring
+        networks:
+          - ddd-with-spring-network
+        ports:
+          - "8080:8080"
 networks:
     ddd-with-spring-network:
         driver: bridge

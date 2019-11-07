@@ -3,6 +3,7 @@ package com.mploed.dddwithspring.scoring.financialSituation;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.math.BigDecimal;
 
 @Entity
 public class FinancialSituationResultProjection {
@@ -10,29 +11,58 @@ public class FinancialSituationResultProjection {
 	@GeneratedValue
 	private Long id;
 	private String applicationNumber;
-	private int points;
 
-	public Long getId() {
+	private BigDecimal incomingOther;
+	private BigDecimal incomingSalary;
+
+	private BigDecimal outgoingRent;
+	private BigDecimal outgoingCostOfLiving;
+
+	Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getApplicationNumber() {
+	String getApplicationNumber() {
 		return applicationNumber;
 	}
 
-	public void setApplicationNumber(String applicationNumber) {
+	void setApplicationNumber(String applicationNumber) {
 		this.applicationNumber = applicationNumber;
 	}
 
-	public int getPoints() {
-		return points;
+	BigDecimal getIncomingOther() {
+		return incomingOther;
 	}
 
-	public void setPoints(int points) {
-		this.points = points;
+	void setIncomingOther(BigDecimal incomingOther) {
+		this.incomingOther = incomingOther;
+	}
+
+	BigDecimal getIncomingSalary() {
+		return incomingSalary;
+	}
+
+	void setIncomingSalary(BigDecimal incomingSalary) {
+		this.incomingSalary = incomingSalary;
+	}
+
+	BigDecimal getOutgoingRent() {
+		return outgoingRent;
+	}
+
+	void setOutgoingRent(BigDecimal outgoingRent) {
+		this.outgoingRent = outgoingRent;
+	}
+
+	BigDecimal getOutgoingCostOfLiving() {
+		return outgoingCostOfLiving;
+	}
+
+	void setOutgoingCostOfLiving(BigDecimal outgoingCostOfLiving) {
+		this.outgoingCostOfLiving = outgoingCostOfLiving;
 	}
 }

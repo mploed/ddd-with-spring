@@ -14,6 +14,9 @@ class ScoringCalculationResults {
 	}
 
 	OverallScoringResult calculateOverallResult() {
+		System.out.println("Applicant Result: " + applicantScoringResult);
+		System.out.println("FinancialSituation Result: " + financialSituationScoringResult);
+		System.out.println("CreditAgency Result: " + agencyScoringResult);
 		int overallPoints = applicantScoringResult + financialSituationScoringResult + agencyScoringResult;
 		ScoringColor color;
 
@@ -22,8 +25,6 @@ class ScoringCalculationResults {
 		} else {
 			if (overallPoints > 40) {
 				color = ScoringColor.GREEN;
-			} else if (overallPoints > 20) {
-				color = ScoringColor.YELLOW;
 			} else {
 				color = ScoringColor.RED;
 			}

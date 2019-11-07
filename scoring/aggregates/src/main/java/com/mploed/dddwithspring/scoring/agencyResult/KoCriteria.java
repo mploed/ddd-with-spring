@@ -1,6 +1,6 @@
 package com.mploed.dddwithspring.scoring.agencyResult;
 
-class KoCriteria {
+ class KoCriteria {
 	private String key;
 	private String messageText;
 

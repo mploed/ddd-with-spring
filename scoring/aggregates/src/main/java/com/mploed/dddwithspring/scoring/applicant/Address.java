@@ -16,8 +16,22 @@ class Address {
 			return 5;
 		} else if ("Dortmund".equals(city)) {
 			return -2;
-		} else {
+		} else if ("Nürnberg".equals(city)) {
+			return 8;
+		}else {
 			return 0;
 		}
+	}
+
+	String getCity() {
+		return city;
+	}
+
+	String getPostCode() {
+		return postCode;
+	}
+
+	String getStreet() {
+		return street;
 	}
 }

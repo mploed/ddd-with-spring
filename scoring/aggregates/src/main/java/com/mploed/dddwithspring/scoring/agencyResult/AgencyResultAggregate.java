@@ -69,6 +69,11 @@ public class AgencyResultAggregate {
 			return this;
 		}
 
+		public AgencyResultBuilder personId(PersonId personId) {
+			this.personId = personId;
+			return this;
+		}
+
 		public AgencyResultBuilder forPerson(String firstName, String lastName, String street, String postCode, String city) {
 			if(this.personId != null) {
 				throw new IllegalArgumentException("You have already set a person");
