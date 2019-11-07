@@ -46,10 +46,13 @@ public class AggregateArchitectureTest {
     public static ArchRule aggregateVisibilityRule =
             classes().that().areAnnotatedWith(Aggregate.class).should().bePublic();
 
+    //this test has and exception for the application aggregate because here I merged the aggregate and the root entity
+    //in order showcase a different style for the implementation of aggregates
     @ArchTest
     public static ArchRule aggregateToRootEntityReference =
             classes()
                     .that().areAnnotatedWith(Aggregate.class)
+                    .and().haveSimpleNameNotEndingWith("ApplicantAggregate")
                     .should().accessClassesThat().haveSimpleNameEndingWith("RootEntity");
 
     @ArchTest
