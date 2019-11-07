@@ -7,7 +7,7 @@
 
     <groupId>com.mploed.dddwithspring.scoring</groupId>
     <version>0.0.1-SNAPSHOT</version>
-    <artifactId>credit-sales-funnel-springbootapp</artifactId>
+    <artifactId>credit-sales-funnel</artifactId>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
