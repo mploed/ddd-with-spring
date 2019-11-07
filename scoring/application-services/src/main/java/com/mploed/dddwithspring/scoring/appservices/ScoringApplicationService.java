@@ -112,7 +112,6 @@ public class ScoringApplicationService {
 		AgencyResultAggregate agencyResultAggregate = agencyResultRepository.retrieve(applicantAggregate.getPersonId());
 
 		if(financialSituationAggregate != null && applicantAggregate !=null && agencyResultAggregate != null) {
-
 			log.info("everything is complete for " + applicationNumber.toString());
 			ScoringResultAggregate scoringResultAggregate = new ScoringResultAggregate.Builder(applicationNumber)
 					.noGoCriteria(!agencyResultAggregate.isAcceptable())
