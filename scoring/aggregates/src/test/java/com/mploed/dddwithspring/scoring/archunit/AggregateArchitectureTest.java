@@ -9,7 +9,7 @@ import com.mploed.dddwithspring.scoring.microarchitecture.Aggregate;
 import com.mploed.dddwithspring.scoring.microarchitecture.AggregateBuilder;
 import com.mploed.dddwithspring.scoring.scoringResult.ScoringResultAggregate;
 import com.tngtech.archunit.core.domain.JavaClasses;
-import com.tngtech.archunit.core.importer.ImportOption.DontIncludeTests;
+import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.junit.ArchUnitRunner;
@@ -22,7 +22,7 @@ import static com.tngtech.archunit.library.plantuml.PlantUmlArchCondition.adhere
 @RunWith(ArchUnitRunner.class)
 @AnalyzeClasses(
         packagesOf = {ScoringResultAggregate.class, ApplicantAggregate.class, FinancialSituationAggregate.class, AgencyResultAggregate.class},
-        importOptions = DontIncludeTests.class)
+        importOptions = ImportOption.DoNotIncludeTests.class)
 public class AggregateArchitectureTest {
     private static final URL scoringDiagram = AggregateArchitectureTest.class.getResource("scoring.puml");
 
