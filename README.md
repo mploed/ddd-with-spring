@@ -11,7 +11,7 @@ Spring ecosystem. It is also the demo project for my conference talk "Implementi
 ecosystem".
 
 ## Which DDD aspects are covered?
-The focus of the demo project are Aggregates, event-based communication and bounded contests. The complete list is:
+The focus of the demo project are Aggregates, event-based communication and bounded contexts. The complete list is:
 
 - Aggregates
 - Event-based communication with
